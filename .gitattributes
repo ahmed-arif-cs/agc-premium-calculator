@@ -1,0 +1,47 @@
+# Auto detect text files and normalize line endings to LF on checkin.
+* text=auto eol=lf
+
+# Explicit source types
+*.ts text eol=lf
+*.tsx text eol=lf
+*.js text eol=lf
+*.jsx text eol=lf
+*.mjs text eol=lf
+*.cjs text eol=lf
+*.json text eol=lf
+*.css text eol=lf
+*.scss text eol=lf
+*.html text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.sql text eol=lf
+*.sh text eol=lf
+
+# Windows-specific scripts should keep CRLF
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Binary assets — do not diff, do not modify line endings
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+*.pdf binary
+*.db binary
+*.zip binary
+
+# SVGs are text but treated as generated/binary-ish for diff purposes
+*.svg text eol=lf diff
+
+# Ensure lockfiles are diffed as text but generally not hand-edited
+package-lock.json text eol=lf -diff
+
+# Mark generated/vendor files as not part of the diff/language stats
+docs/* linguist-documentation

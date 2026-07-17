@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 30 30" style="enable-background:new 0 0 30 30;" xml:space="preserve">
+<defs>
+  <style type="text/css">
+    .st-bg{fill:#0a0e17;stroke:#d4af37;stroke-width:0.6317;stroke-miterlimit:10;stroke-opacity:0.6;}
+    .st-gold{fill:#d4af37;}
+
+    .z-breathe {
+      animation: breathe 2.5s ease-in-out infinite;
+    }
+
+    @keyframes breathe {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
+  </style>
+</defs>
+
+<g>
+  <path class="st-bg" d="M24.51,28.51H5.49c-2.21,0-4-1.79-4-4V5.49c0-2.21,1.79-4,4-4h19.03c2.21,0,4,1.79,4,4v19.03
+    C28.51,26.72,26.72,28.51,24.51,28.51z"/>
+  <g class="z-breathe">
+    <circle cx="15" cy="14.4" r="7.6" fill="none" stroke="#d4af37" stroke-width="1.1"/>
+    <text x="15" y="17.2" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="6.4" letter-spacing="0.1" class="st-gold">AGC</text>
+    <circle cx="15" cy="24" r="0.7" fill="#e8c766"/>
+  </g>
+</g>
+</svg>

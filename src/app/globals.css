@@ -1,0 +1,3699 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* ============================================================
+   AGC — Themeable premium calculator theme
+   Semantic variables (--c-*) drive every color so the whole
+   UI re-themes via a `data-theme` attribute on <html>.
+   ============================================================ */
+
+:root,
+[data-theme="navy-gold"] {
+  --c-bg: #0a0e17;
+  --c-bg-deep: #060912;
+  --c-glow-rgb: 212, 175, 55;
+  --c-card-1: rgba(22, 30, 46, 0.78);
+  --c-card-2: rgba(12, 17, 28, 0.72);
+  --c-card-border: rgba(212, 175, 55, 0.22);
+  --c-surface-rgb: 255, 255, 255;
+  --c-sheen-rgb: 255, 255, 255;
+  --c-text: #e8eaf0;
+  --c-text-2: #9aa3b8;
+  --c-text-muted: #6b7488;
+  --c-hover-text: #ffffff;
+  --c-accent: #d4af37;
+  --c-accent-soft: #e8c766;
+  --c-accent-bright: #f0d378;
+  --c-accent-dark: #0a0e17;
+  --c-accent-rgb: 212, 175, 55;
+  --c-btn-1: rgba(40, 50, 72, 0.55);
+  --c-btn-2: rgba(20, 27, 42, 0.55);
+  --c-btn-border: rgba(255, 255, 255, 0.06);
+  --c-equals-1: #f0d378;
+  --c-equals-2: #d4af37;
+  --c-equals-3: #b8932b;
+  --c-result-1: #f4dd92;
+  --c-result-2: #d4af37;
+  --c-shadow: rgba(0, 0, 0, 0.75);
+  --c-history-1: rgba(20, 27, 42, 0.92);
+  --c-history-2: rgba(10, 14, 23, 0.92);
+  --c-backdrop: rgba(6, 9, 18, 0.55);
+}
+
+[data-theme="light"] {
+  --c-bg: #f3f4f8;
+  --c-bg-deep: #e7e9ef;
+  --c-glow-rgb: 184, 147, 43;
+  --c-card-1: rgba(255, 255, 255, 0.86);
+  --c-card-2: rgba(244, 246, 250, 0.8);
+  --c-card-border: rgba(184, 147, 43, 0.35);
+  --c-surface-rgb: 30, 41, 59;
+  --c-sheen-rgb: 255, 255, 255;
+  --c-text: #1a2233;
+  --c-text-2: #4a5568;
+  --c-text-muted: #8a94a8;
+  --c-hover-text: #14203a;
+  --c-accent: #b8932b;
+  --c-accent-soft: #9a7a1e;
+  --c-accent-bright: #d4af37;
+  --c-accent-dark: #ffffff;
+  --c-accent-rgb: 184, 147, 43;
+  --c-btn-1: rgba(255, 255, 255, 0.92);
+  --c-btn-2: rgba(232, 236, 244, 0.82);
+  --c-btn-border: rgba(30, 41, 59, 0.1);
+  --c-equals-1: #f0d378;
+  --c-equals-2: #d4af37;
+  --c-equals-3: #b8932b;
+  --c-result-1: #c9a233;
+  --c-result-2: #9a7a1e;
+  --c-shadow: rgba(30, 41, 59, 0.16);
+  --c-history-1: rgba(255, 255, 255, 0.96);
+  --c-history-2: rgba(244, 246, 250, 0.96);
+  --c-backdrop: rgba(30, 41, 59, 0.32);
+}
+
+[data-theme="navy-emerald"] {
+  --c-bg: #07151a;
+  --c-bg-deep: #04101a;
+  --c-glow-rgb: 16, 185, 129;
+  --c-card-1: rgba(15, 32, 38, 0.8);
+  --c-card-2: rgba(8, 20, 26, 0.74);
+  --c-card-border: rgba(16, 185, 129, 0.25);
+  --c-surface-rgb: 255, 255, 255;
+  --c-sheen-rgb: 255, 255, 255;
+  --c-text: #e6f0ee;
+  --c-text-2: #8fb3ad;
+  --c-text-muted: #5e7d78;
+  --c-hover-text: #ffffff;
+  --c-accent: #10b981;
+  --c-accent-soft: #34d399;
+  --c-accent-bright: #6ee7b7;
+  --c-accent-dark: #04101a;
+  --c-accent-rgb: 16, 185, 129;
+  --c-btn-1: rgba(30, 52, 58, 0.55);
+  --c-btn-2: rgba(14, 30, 34, 0.55);
+  --c-btn-border: rgba(255, 255, 255, 0.06);
+  --c-equals-1: #6ee7b7;
+  --c-equals-2: #10b981;
+  --c-equals-3: #047857;
+  --c-result-1: #6ee7b7;
+  --c-result-2: #10b981;
+  --c-shadow: rgba(0, 0, 0, 0.75);
+  --c-history-1: rgba(15, 32, 38, 0.92);
+  --c-history-2: rgba(8, 20, 26, 0.92);
+  --c-backdrop: rgba(4, 16, 26, 0.55);
+}
+
+[data-theme="charcoal-rosegold"] {
+  --c-bg: #1a1518;
+  --c-bg-deep: #120e10;
+  --c-glow-rgb: 214, 160, 142;
+  --c-card-1: rgba(38, 30, 33, 0.8);
+  --c-card-2: rgba(24, 19, 21, 0.74);
+  --c-card-border: rgba(214, 160, 142, 0.25);
+  --c-surface-rgb: 255, 255, 255;
+  --c-sheen-rgb: 255, 255, 255;
+  --c-text: #f2e6e2;
+  --c-text-2: #c2a39a;
+  --c-text-muted: #8a726b;
+  --c-hover-text: #ffffff;
+  --c-accent: #d6a08e;
+  --c-accent-soft: #e6b8a6;
+  --c-accent-bright: #f0cab9;
+  --c-accent-dark: #1a1518;
+  --c-accent-rgb: 214, 160, 142;
+  --c-btn-1: rgba(50, 40, 43, 0.55);
+  --c-btn-2: rgba(30, 23, 25, 0.55);
+  --c-btn-border: rgba(255, 255, 255, 0.06);
+  --c-equals-1: #f0cab9;
+  --c-equals-2: #d6a08e;
+  --c-equals-3: #b67e6a;
+  --c-result-1: #f0cab9;
+  --c-result-2: #d6a08e;
+  --c-shadow: rgba(0, 0, 0, 0.7);
+  --c-history-1: rgba(38, 30, 33, 0.92);
+  --c-history-2: rgba(24, 19, 21, 0.92);
+  --c-backdrop: rgba(18, 14, 16, 0.55);
+}
+
+html,
+body {
+  background-color: var(--c-bg);
+  color: var(--c-text);
+}
+
+body {
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: rgba(var(--c-accent-rgb), 0.3);
+  color: var(--c-hover-text);
+}
+
+.font-display {
+  font-family: var(--font-space-grotesk), var(--font-geist-mono), ui-monospace,
+    monospace;
+  font-feature-settings: "tnum" 1, "zero" 1;
+}
+
+/* Theme-aware text/utility helpers (used by components instead of hardcoded colors) */
+.t-accent { color: var(--c-accent-soft); }
+.t-text { color: var(--c-text); }
+.t-secondary { color: var(--c-text-2); }
+.t-muted { color: var(--c-text-muted); }
+
+/* Ambient background glows */
+.calc-bg-glow {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(55% 45% at 50% -8%, rgba(var(--c-glow-rgb), 0.16), transparent 70%),
+    radial-gradient(45% 38% at 88% 112%, rgba(var(--c-glow-rgb), 0.1), transparent 70%),
+    radial-gradient(45% 38% at 12% 102%, rgba(var(--c-glow-rgb), 0.08), transparent 70%);
+}
+
+/* Glassmorphism card */
+.calc-glass {
+  --fs: 1;
+  position: relative;
+  background: linear-gradient(160deg, var(--c-card-1) 0%, var(--c-card-2) 100%);
+  backdrop-filter: blur(22px) saturate(140%);
+  -webkit-backdrop-filter: blur(22px) saturate(140%);
+  border: 1px solid var(--c-card-border);
+  border-radius: 28px;
+  box-shadow:
+    0 0 0 1px rgba(var(--c-accent-rgb), 0.06),
+    0 24px 70px -24px var(--c-shadow),
+    0 0 90px -30px rgba(var(--c-accent-rgb), 0.28),
+    inset 0 1px 0 rgba(var(--c-sheen-rgb), 0.06);
+}
+
+.calc-glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    160deg,
+    rgba(var(--c-accent-rgb), 0.5),
+    rgba(var(--c-accent-rgb), 0) 38%,
+    rgba(var(--c-accent-rgb), 0) 62%,
+    rgba(var(--c-accent-rgb), 0.28)
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+/* Accessibility font scale (sm / md / lg) */
+.calc-glass[data-fs="sm"] { --fs: 0.9; }
+.calc-glass[data-fs="md"] { --fs: 1; }
+.calc-glass[data-fs="lg"] { --fs: 1.12; }
+
+/* Buttons */
+.calc-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  font-size: calc(1.35rem * var(--fs));
+  font-weight: 500;
+  line-height: 1;
+  color: var(--c-text);
+  border: 1px solid var(--c-btn-border);
+  background: linear-gradient(180deg, var(--c-btn-1), var(--c-btn-2));
+  box-shadow:
+    inset 0 1px 0 rgba(var(--c-sheen-rgb), 0.05),
+    0 8px 18px -10px var(--c-shadow);
+  overflow: hidden;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.calc-btn:hover {
+  background: linear-gradient(180deg, var(--c-btn-1), var(--c-btn-2));
+  filter: brightness(1.12);
+  border-color: rgba(var(--c-accent-rgb), 0.18);
+  color: var(--c-hover-text);
+}
+
+.calc-btn:active {
+  transform: translateY(1px) scale(0.97);
+}
+
+.calc-btn:focus-visible {
+  outline: 2px solid rgba(var(--c-accent-rgb), 0.7);
+  outline-offset: 2px;
+}
+
+.calc-btn--function {
+  color: var(--c-accent-soft);
+  font-size: calc(1.15rem * var(--fs));
+  background: linear-gradient(180deg, rgba(var(--c-accent-rgb), 0.1), rgba(var(--c-accent-rgb), 0.03));
+  border-color: rgba(var(--c-accent-rgb), 0.18);
+}
+
+.calc-btn--function:hover {
+  background: linear-gradient(180deg, rgba(var(--c-accent-rgb), 0.2), rgba(var(--c-accent-rgb), 0.06));
+  border-color: rgba(var(--c-accent-rgb), 0.42);
+  color: var(--c-hover-text);
+}
+
+.calc-btn--operator {
+  color: var(--c-accent-soft);
+  font-size: calc(1.5rem * var(--fs));
+  background: linear-gradient(180deg, rgba(var(--c-accent-rgb), 0.16), rgba(var(--c-accent-rgb), 0.04));
+  border-color: rgba(var(--c-accent-rgb), 0.24);
+}
+
+.calc-btn--operator:hover {
+  background: linear-gradient(180deg, rgba(var(--c-accent-rgb), 0.26), rgba(var(--c-accent-rgb), 0.08));
+  border-color: rgba(var(--c-accent-rgb), 0.5);
+  color: var(--c-hover-text);
+}
+
+.calc-btn--equals {
+  color: var(--c-accent-dark);
+  font-weight: 700;
+  background: linear-gradient(180deg, var(--c-equals-1), var(--c-equals-2) 55%, var(--c-equals-3));
+  border-color: rgba(var(--c-sheen-rgb), 0.5);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    0 10px 24px -8px rgba(var(--c-accent-rgb), 0.55),
+    0 0 30px -6px rgba(var(--c-accent-rgb), 0.45);
+}
+
+.calc-btn--equals:hover {
+  background: linear-gradient(180deg, var(--c-equals-1), var(--c-equals-2) 55%, var(--c-equals-3));
+  filter: brightness(1.06);
+  color: var(--c-accent-dark);
+}
+
+/* Gold glow ripple on press */
+.calc-ripple {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 9999px;
+  transform: translate(-50%, -50%) scale(0);
+  background: radial-gradient(circle, rgba(var(--c-accent-rgb), 0.55), rgba(var(--c-accent-rgb), 0) 70%);
+  pointer-events: none;
+  animation: calc-ripple 0.6s ease-out forwards;
+}
+
+@keyframes calc-ripple {
+  to {
+    transform: translate(-50%, -50%) scale(18);
+    opacity: 0;
+  }
+}
+
+/* Result display — accent gradient text */
+.calc-result {
+  background: linear-gradient(180deg, var(--c-result-1) 0%, var(--c-result-2) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Keyboard hint chips */
+.calc-kbd {
+  display: inline-block;
+  padding: 1px 6px;
+  margin: 0 1px;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 10px;
+  line-height: 1.5;
+  color: var(--c-accent-soft);
+  background: rgba(var(--c-accent-rgb), 0.08);
+  border: 1px solid rgba(var(--c-accent-rgb), 0.25);
+  border-radius: 6px;
+}
+
+/* Themed toast */
+.calc-toast {
+  background: linear-gradient(160deg, var(--c-history-1), var(--c-history-2)) !important;
+  border: 1px solid rgba(var(--c-accent-rgb), 0.3) !important;
+  color: var(--c-text) !important;
+  backdrop-filter: blur(12px);
+  box-shadow:
+    0 12px 40px -12px var(--c-shadow),
+    0 0 30px -10px rgba(var(--c-accent-rgb), 0.3);
+}
+
+/* ============================================================
+   Top bar: mode tabs + utility buttons
+   ============================================================ */
+.calc-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  row-gap: 0.5rem;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.calc-tabs {
+  position: relative;
+  display: inline-flex;
+  min-width: 0;
+  flex-shrink: 1;
+  padding: 3px;
+  border-radius: 14px;
+  background: rgba(var(--c-surface-rgb), 0.04);
+  border: 1px solid rgba(var(--c-surface-rgb), 0.06);
+}
+
+.calc-tabs-indicator {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  width: calc((100% - 6px) / 3);
+  border-radius: 11px;
+  background: linear-gradient(180deg, rgba(var(--c-accent-rgb), 0.24), rgba(var(--c-accent-rgb), 0.08));
+  border: 1px solid rgba(var(--c-accent-rgb), 0.45);
+  box-shadow: 0 0 18px -4px rgba(var(--c-accent-rgb), 0.55);
+  transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.calc-tabs[data-active="0"] .calc-tabs-indicator { transform: translateX(0); }
+.calc-tabs[data-active="1"] .calc-tabs-indicator { transform: translateX(100%); }
+.calc-tabs[data-active="2"] .calc-tabs-indicator { transform: translateX(200%); }
+
+.calc-tab {
+  position: relative;
+  z-index: 1;
+  padding: 6px 12px;
+  font-size: 0.76rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--c-text-muted);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+.calc-tab:hover { color: var(--c-text-2); }
+.calc-tab--active { color: var(--c-accent-soft); }
+
+/* Utility icon buttons (smart / undo / redo / settings / history / about) */
+.calc-utils {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.3rem;
+  max-width: 100%;
+}
+
+.calc-util-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  color: var(--c-text-2);
+  background: rgba(var(--c-surface-rgb), 0.04);
+  border: 1px solid rgba(var(--c-surface-rgb), 0.07);
+  cursor: pointer;
+  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+}
+
+/* Small "signed in" indicator dot on the account topbar button */
+.calc-util-dot {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 7px;
+  height: 7px;
+  border-radius: 9999px;
+  background: #34d399;
+  box-shadow: 0 0 0 2px var(--c-card-1, rgba(10, 14, 23, 0.9));
+}
+
+.calc-util-btn:hover:not(:disabled) {
+  color: var(--c-accent-soft);
+  border-color: rgba(var(--c-accent-rgb), 0.4);
+  background: rgba(var(--c-accent-rgb), 0.1);
+}
+
+.calc-util-btn--active {
+  color: var(--c-accent-soft);
+  border-color: rgba(var(--c-accent-rgb), 0.5);
+  background: rgba(var(--c-accent-rgb), 0.16);
+}
+
+.calc-util-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.calc-util-btn:focus-visible { outline: 2px solid rgba(var(--c-accent-rgb), 0.7); outline-offset: 1px; }
+.calc-util-btn:active:not(:disabled) {
+  transform: translateY(1px) scale(0.94);
+  box-shadow: 0 0 0 3px rgba(var(--c-accent-rgb), 0.14);
+}
+
+/* Compact topbar on small screens so 3 tabs + 6 util buttons fit */
+@media (max-width: 460px) {
+  .calc-tab { padding: 6px 8px; font-size: 0.7rem; }
+  .calc-utils { gap: 0.2rem; }
+  .calc-util-btn { width: 28px; height: 28px; }
+  .calc-topbar { flex-wrap: wrap; row-gap: 0.5rem; }
+}
+
+/* Memory bar */
+.calc-mem {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.25rem;
+}
+
+.calc-mem-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 30px;
+  height: 30px;
+  padding: 0 8px;
+  border-radius: 8px;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--c-text-muted);
+  background: rgba(var(--c-surface-rgb), 0.03);
+  border: 1px solid rgba(var(--c-surface-rgb), 0.06);
+  transition: all 0.2s ease;
+}
+
+.calc-mem-indicator--active {
+  color: var(--c-accent-soft);
+  background: rgba(var(--c-accent-rgb), 0.12);
+  border-color: rgba(var(--c-accent-rgb), 0.4);
+  box-shadow: 0 0 14px -4px rgba(var(--c-accent-rgb), 0.5);
+}
+
+.calc-mem-indicator--active .calc-mem-dot::after {
+  content: "●";
+  margin-left: 3px;
+  font-size: 0.6rem;
+  color: var(--c-accent-soft);
+}
+
+.calc-mem-btn {
+  flex: 1;
+  height: 30px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--c-text-2);
+  background: rgba(var(--c-surface-rgb), 0.04);
+  border: 1px solid rgba(var(--c-surface-rgb), 0.07);
+  cursor: pointer;
+  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+}
+
+.calc-mem-btn:hover:not(:disabled) {
+  color: var(--c-accent-soft);
+  border-color: rgba(var(--c-accent-rgb), 0.35);
+  background: rgba(var(--c-accent-rgb), 0.08);
+}
+
+.calc-mem-btn:active:not(:disabled) { transform: translateY(1px); }
+.calc-mem-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+/* Memory Cloud Sync badge (Task 16) — small, quiet status dot next to the
+   memory indicator; only rendered when a logged-in user actually has a
+   sync status to report (see MemoryBar.tsx's <SyncBadge>). Same theme
+   tokens as .calc-history-sync so it re-themes identically. */
+.calc-mem-sync {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  color: var(--c-text-muted);
+  opacity: 0.85;
+}
+
+.calc-mem-sync--synced {
+  color: var(--c-accent-soft);
+}
+
+.calc-mem-sync--restoring,
+.calc-mem-sync--syncing {
+  color: var(--c-accent-soft);
+}
+
+.calc-mem-sync--error {
+  color: rgb(244 63 94 / 0.85);
+}
+
+.calc-glass--sci { max-width: 420px; }
+
+/* Dividers */
+.u-divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(var(--c-accent-rgb), 0.25), transparent);
+}
+.u-divider-soft {
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(var(--c-surface-rgb), 0.12), transparent);
+}
+
+/* ============================================================
+   Slide-out panels (history / settings) — shared shell
+   ============================================================ */
+.calc-history-backdrop,
+.calc-settings-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  background: var(--c-backdrop);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.calc-history-backdrop--open,
+.calc-settings-backdrop--open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.calc-history-panel,
+.calc-settings-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 95;
+  width: min(360px, 92vw);
+  display: flex;
+  flex-direction: column;
+  padding: 18px 16px 16px;
+  background: linear-gradient(160deg, var(--c-history-1), var(--c-history-2));
+  backdrop-filter: blur(24px) saturate(140%);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  border-left: 1px solid rgba(var(--c-accent-rgb), 0.25);
+  box-shadow:
+    -24px 0 70px -24px var(--c-shadow),
+    0 0 60px -20px rgba(var(--c-accent-rgb), 0.25);
+  transform: translateX(100%);
+  transition: transform 0.34s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.calc-history-panel--open,
+.calc-settings-panel--open {
+  transform: translateX(0);
+}
+
+.calc-history-header,
+.calc-settings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(var(--c-surface-rgb), 0.06);
+}
+
+.calc-history-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--c-accent-soft);
+  background: rgba(var(--c-accent-rgb), 0.14);
+  border: 1px solid rgba(var(--c-accent-rgb), 0.3);
+}
+
+/* History Cloud Sync badge (Task 15) — small, quiet status dot next to the
+   item count; only rendered when a logged-in user actually has a sync
+   status to report (see HistoryPanel.tsx's <SyncBadge>). */
+.calc-history-sync {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  color: var(--c-text-muted);
+  opacity: 0.85;
+}
+
+.calc-history-sync--synced {
+  color: var(--c-accent-soft);
+}
+
+.calc-history-sync--restoring,
+.calc-history-sync--syncing {
+  color: var(--c-accent-soft);
+}
+
+.calc-history-sync--error {
+  color: rgb(244 63 94 / 0.85);
+}
+
+/* Settings Cloud Sync badge (Task 17) — small, quiet status dot next to
+   the "SETTINGS" panel title; only rendered when a logged-in user
+   actually has a sync status to report (see SettingsPanel.tsx's
+   <SyncBadge>). Same theme tokens as .calc-mem-sync/.calc-history-sync so
+   it re-themes identically. */
+.calc-settings-sync {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  color: var(--c-text-muted);
+  opacity: 0.85;
+}
+
+.calc-settings-sync--synced {
+  color: var(--c-accent-soft);
+}
+
+.calc-settings-sync--restoring,
+.calc-settings-sync--syncing {
+  color: var(--c-accent-soft);
+}
+
+.calc-settings-sync--error {
+  color: rgb(244 63 94 / 0.85);
+}
+
+/* Favorites Cloud Sync badge (Task 18) — small, quiet status dot next to
+   the "FAVORITES" panel title; only rendered when a logged-in user
+   actually has a sync status to report (see FavoritesPanel.tsx's
+   <SyncBadge>). Same theme tokens as .calc-mem-sync/.calc-history-sync/
+   .calc-settings-sync so it re-themes identically. */
+.calc-fav-sync {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  color: var(--c-text-muted);
+  opacity: 0.85;
+}
+
+.calc-fav-sync--synced {
+  color: var(--c-accent-soft);
+}
+
+.calc-fav-sync--restoring,
+.calc-fav-sync--syncing {
+  color: var(--c-accent-soft);
+}
+
+.calc-fav-sync--error {
+  color: rgb(244 63 94 / 0.85);
+}
+
+.calc-history-close,
+.calc-settings-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  color: var(--c-text-muted);
+  background: rgba(var(--c-surface-rgb), 0.04);
+  border: 1px solid rgba(var(--c-surface-rgb), 0.07);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.calc-history-close:hover,
+.calc-settings-close:hover {
+  color: var(--c-accent-soft);
+  border-color: rgba(var(--c-accent-rgb), 0.4);
+  background: rgba(var(--c-accent-rgb), 0.1);
+}
+
+.calc-history-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  padding: 12px 0 6px;
+}
+
+.calc-export-menu {
+  position: relative;
+}
+
+.calc-export-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  min-width: 160px;
+  max-width: calc(100vw - 32px);
+  padding: 4px;
+  background: linear-gradient(160deg, var(--c-card-1) 0%, var(--c-card-2) 100%);
+  backdrop-filter: blur(22px) saturate(140%);
+  -webkit-backdrop-filter: blur(22px) saturate(140%);
+  border: 1px solid var(--c-card-border);
+  border-radius: 12px;
+  box-shadow: 0 20px 50px -18px var(--c-shadow), 0 0 0 1px rgba(var(--c-accent-rgb), 0.08);
+}
+
+.calc-export-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 9px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--c-text-2);
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.calc-export-item:hover {
+  color: var(--c-accent-soft);
+  background: rgba(var(--c-accent-rgb), 0.12);
+}
+
+.calc-history-clear,
+.calc-export-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--c-text-2);
+  background: rgba(var(--c-surface-rgb), 0.04);
+  border: 1px solid rgba(var(--c-surface-rgb), 0.08);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.calc-export-btn:hover {
+  color: var(--c-accent-soft);
+  border-color: rgba(var(--c-accent-rgb), 0.4);
+  background: rgba(var(--c-accent-rgb), 0.1);
+}
+
+.calc-history-clear:active,
+.calc-export-btn:active {
+  transform: translateY(1px) scale(0.97);
+}
+
+.calc-history-clear:hover {
+  color: #fda4af;
+  border-color: rgba(244, 114, 133, 0.4);
+  background: rgba(244, 114, 133, 0.08);
+}
+
+.calc-history-clear--confirm {
+  color: #fda4af;
+  border-color: rgba(244, 114, 133, 0.5);
+  background: rgba(244, 114, 133, 0.12);
+}
+
+/* Success flash — brief gold pulse + checkmark swap for export/import actions */
+.calc-flash-success {
+  color: var(--c-accent-soft) !important;
+  border-color: rgba(var(--c-accent-rgb), 0.55) !important;
+  animation: calc-flash-pulse 1.1s ease-out;
+}
+
+@keyframes calc-flash-pulse {
+  0% { background: rgba(var(--c-accent-rgb), 0.32); box-shadow: 0 0 0 0 rgba(var(--c-accent-rgb), 0.4); }
+  60% { background: rgba(var(--c-accent-rgb), 0.16); box-shadow: 0 0 0 6px rgba(var(--c-accent-rgb), 0); }
+  100% { background: rgba(var(--c-surface-rgb), 0.04); box-shadow: 0 0 0 0 rgba(var(--c-accent-rgb), 0); }
+}
+
+.calc-history-list {
+  flex: 1;
+  overflow-y: auto;
+  list-style: none;
+  margin: 0;
+  padding: 4px 4px 8px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.calc-history-list::-webkit-scrollbar { width: 6px; }
+.calc-history-list::-webkit-scrollbar-track { background: transparent; }
+.calc-history-list::-webkit-scrollbar-thumb { background: rgba(var(--c-accent-rgb), 0.25); border-radius: 3px; }
+.calc-history-list::-webkit-scrollbar-thumb:hover { background: rgba(var(--c-accent-rgb), 0.4); }
+
+.calc-history-item {
+  position: relative;
+  border-radius: 12px;
+  background: rgba(var(--c-surface-rgb), 0.03);
+  border: 1px solid rgba(var(--c-surface-rgb), 0.06);
+  transition: all 0.2s ease;
+}
+
+.calc-history-item:hover {
+  border-color: rgba(var(--c-accent-rgb), 0.28);
+  background: rgba(var(--c-accent-rgb), 0.05);
+}
+
+.calc-history-del {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  color: var(--c-text-muted);
+  background: rgba(var(--c-surface-rgb), 0.04);
+  border: 1px solid rgba(var(--c-surface-rgb), 0.07);
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.2s ease;
+}
+
+.calc-history-item:hover .calc-history-del,
+.calc-history-del:focus-visible {
+  opacity: 1;
+}
+.calc-history-del:hover {
+  color: #fda4af;
+  border-color: rgba(244, 114, 133, 0.4);
+  background: rgba(244, 114, 133, 0.1);
+}
+.calc-history-del:active {
+  transform: scale(0.92);
+}
+
+/* Touch devices have no hover state — keep the delete control reachable
+   instead of hiding it behind an unreachable :hover trigger. */
+@media (hover: none) {
+  .calc-history-del { opacity: 0.55; }
+}
+
+/* Favorite-star toggle (Task 18) — sits to the left of the delete button on
+   each HistoryPanel row. Same shape/behavior as .calc-history-del (fades in
+   on hover, always visible on touch devices), but stays gold-filled once
+   the item is starred so favorited rows are identifiable at a glance even
+   without hovering. */
+.calc-history-fav {
+  position: absolute;
+  top: 6px;
+  right: 32px;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  color: var(--c-text-muted);
+  background: rgba(var(--c-surface-rgb), 0.04);
+  border: 1px solid rgba(var(--c-surface-rgb), 0.07);
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.2s ease;
+}
+
+.calc-history-item:hover .calc-history-fav,
+.calc-history-fav:focus-visible,
+.calc-history-fav--active {
+  opacity: 1;
+}
+
+.calc-history-fav:hover {
+  color: var(--c-accent-soft);
+  border-color: rgba(var(--c-accent-rgb), 0.4);
+  background: rgba(var(--c-accent-rgb), 0.1);
+}
+
+.calc-history-fav--active {
+  color: var(--c-accent-soft);
+  border-color: rgba(var(--c-accent-rgb), 0.45);
+  background: rgba(var(--c-accent-rgb), 0.14);
+}
+
+.calc-history-fav:active {
+  transform: scale(0.92);
+}
+
+@media (hover: none) {
+  .calc-history-fav { opacity: 0.55; }
+  .calc-history-fav--active { opacity: 1; }
+}
+
+.calc-history-body {
+  display: block;
+  padding: 9px 34px 10px 12px;
+  cursor: pointer;
+  border-radius: 12px;
+}
+
+/* Extra right-padding for HistoryPanel rows that also show the star toggle,
+   so its text doesn't run under both the star and delete buttons. */
+.calc-history-body--with-fav {
+  padding-right: 58px;
+}
+
+.calc-history-note {
+  width: 100%;
+  margin-bottom: 4px;
+  padding: 3px 7px;
+  font-size: 0.72rem;
+  color: var(--c-accent-soft);
+  background: rgba(var(--c-accent-rgb), 0.06);
+  border: 1px solid rgba(var(--c-accent-rgb), 0.2);
+  border-radius: 6px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.calc-history-note::placeholder { color: var(--c-text-muted); font-style: italic; }
+.calc-history-note:focus {
+  border-color: rgba(var(--c-accent-rgb), 0.55);
+  background: rgba(var(--c-accent-rgb), 0.12);
+  box-shadow: 0 0 0 2px rgba(var(--c-accent-rgb), 0.12);
+}
+
+.calc-history-expr {
+  font-family: var(--font-space-grotesk), var(--font-geist-mono), monospace;
+  font-size: 0.8rem;
+  color: var(--c-text-2);
+  word-break: break-all;
+  line-height: 1.35;
+}
+
+.calc-history-result {
+  font-family: var(--font-space-grotesk), var(--font-geist-mono), monospace;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--c-accent-soft);
+  margin-top: 2px;
+  word-break: break-all;
+}
+
+.calc-history-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+/* ============================================================
+   Phase 3 — Converter, Smart bar, Settings, Voice, Install
+   ============================================================ */
+
+/* Converter */
+.calc-converter {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.calc-cat {
+  display: inline-flex;
+  padding: 3px;
+  border-radius: 12px;
+  background: rgba(var(--c-surface-rgb), 0.04);
+  border: 1px solid rgba(var(--c-surface-rgb), 0.06);
+  gap: 2px;
+}
+
+.calc-cat-btn {
+  padding: 5px 10px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--c-text-muted);
+  background: transparent;
+  border: none;
+  border-radius: 9px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.calc-cat-btn:hover { color: var(--c-text-2); }
+.calc-cat-btn--active {
+  color: var(--c-accent-soft);
+  background: rgba(var(--c-accent-rgb), 0.16);
+  border: 1px solid rgba(var(--c-accent-rgb), 0.4);
+}
+
+.calc-conv-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.calc-select,
+.calc-amount {
+  width: 100%;
+  min-width: 0;
+  padding: 8px 10px;
+  font-family: var(--font-space-grotesk), var(--font-geist-mono), monospace;
+  font-size: 0.85rem;
+  color: var(--c-text);
+  background: rgba(var(--c-surface-rgb), 0.05);
+  border: 1px solid rgba(var(--c-surface-rgb), 0.1);
+  border-radius: 10px;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.calc-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239aa3b8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 9px center;
+  padding-right: 26px;
+  cursor: pointer;
+}
+
+.calc-select:focus,
+.calc-amount:focus {
+  border-color: rgba(var(--c-accent-rgb), 0.55);
+  box-shadow: 0 0 0 2px rgba(var(--c-accent-rgb), 0.14);
+}
+
+.calc-amount { text-align: right; }
+
+.calc-swap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  color: var(--c-accent-soft);
+  background: rgba(var(--c-accent-rgb), 0.1);
+  border: 1px solid rgba(var(--c-accent-rgb), 0.3);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.calc-swap:hover {
+  background: rgba(var(--c-accent-rgb), 0.2);
+  border-color: rgba(var(--c-accent-rgb), 0.5);
+}
+
+.calc-conv-result {
+  margin-top: 0.25rem;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(var(--c-accent-rgb), 0.06);
+  border: 1px solid rgba(var(--c-accent-rgb), 0.18);
+  text-align: right;
+}
+
+.calc-conv-value {
+  font-family: var(--font-space-grotesk), var(--font-geist-mono), monospace;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--c-accent-soft);
+  word-break: break-all;
+  line-height: 1.15;
+}
+
+.calc-conv-meta {
+  font-size: 0.72rem;
+  color: var(--c-text-muted);
+  margin-top: 2px;
+}
+
+.calc-offline-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 8px;
+  padding: 4px 9px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #fbbf7a;
+  background: rgba(217, 155, 61, 0.12);
+  border: 1px solid rgba(217, 155, 61, 0.35);
+  border-radius: 999px;
+}
+
+.calc-conv-loading {
+  font-size: 0.75rem;
+  color: var(--c-text-muted);
+  text-align: center;
+  padding: 8px;
+}
+
+/* Currency select (searchable, region-grouped) */
+.calc-csel {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+}
+
+.calc-csel-trigger {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 8px;
+  padding: 8px 10px;
+  font-family: var(--font-space-grotesk), var(--font-geist-mono), monospace;
+  font-size: 0.85rem;
+  color: var(--c-text);
+  background: rgba(var(--c-surface-rgb), 0.05);
+  border: 1px solid rgba(var(--c-surface-rgb), 0.1);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.calc-csel-trigger:hover {
+  border-color: rgba(var(--c-accent-rgb), 0.4);
+}
+
+.calc-csel-trigger:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.calc-csel-trigger:active:not(:disabled) {
+  transform: translateY(1px) scale(0.98);
+}
+
+.calc-csel-flag {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.calc-csel-code {
+  flex: 1;
+  text-align: left;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.calc-csel-chev {
+  width: 14px;
+  height: 14px;
+  color: var(--c-text-muted);
+  transition: transform 0.2s ease;
+}
+
+.calc-csel-chev--open {
+  transform: rotate(180deg);
+}
+
+.calc-csel-panel {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  left: auto;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  width: max(100%, 240px);
+  max-width: calc(100vw - 32px);
+  max-height: 300px;
+  background: linear-gradient(160deg, var(--c-card-1) 0%, var(--c-card-2) 100%);
+  backdrop-filter: blur(22px) saturate(140%);
+  -webkit-backdrop-filter: blur(22px) saturate(140%);
+  border: 1px solid var(--c-card-border);
+  border-radius: 14px;
+  box-shadow: 0 20px 50px -18px var(--c-shadow), 0 0 0 1px rgba(var(--c-accent-rgb), 0.08);
+  overflow: hidden;
+}
+
+.calc-csel-search {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 10px;
+  color: var(--c-text-muted);
+  border-bottom: 1px solid rgba(var(--c-surface-rgb), 0.08);
+  flex-shrink: 0;
+}
+
+.calc-csel-search input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 0.8rem;
+  color: var(--c-text);
+}
+
+.calc-csel-search input::placeholder {
+  color: var(--c-text-muted);
+}
+
+.calc-csel-list {
+  overflow-y: auto;
+  padding: 4px;
+}
+
+.calc-csel-group + .calc-csel-group {
+  margin-top: 4px;
+}
+
+.calc-csel-group-label {
+  padding: 6px 8px 2px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-text-muted);
+}
+
+.calc-csel-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 8px;
+  padding: 7px 8px;
+  font-size: 0.78rem;
+  color: var(--c-text-2);
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.calc-csel-row:hover {
+  background: rgba(var(--c-accent-rgb), 0.1);
+  color: var(--c-text);
+}
+
+.calc-csel-row--active {
+  color: var(--c-accent-soft);
+  background: rgba(var(--c-accent-rgb), 0.14);
+}
+
+.calc-csel-row-code {
+  font-family: var(--font-space-grotesk), var(--font-geist-mono), monospace;
+  font-weight: 700;
+  width: 38px;
+  flex-shrink: 0;
+}
+
+.calc-csel-row-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--c-text-muted);
+}
+
+.calc-csel-empty {
+  padding: 16px 10px;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--c-text-muted);
+}
+
+/* Smart bar (NL / algebra / voice) */
+.calc-smart {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.75rem;
+  padding: 4px;
+  border-radius: 14px;
+  background: rgba(var(--c-surface-rgb), 0.04);
+  border: 1px solid rgba(var(--c-accent-rgb), 0.18);
+}
+
+.calc-smart-input {
+  flex: 1;
+  min-width: 0;
+  padding: 7px 10px;
+  font-size: 0.85rem;
+  color: var(--c-text);
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+.calc-smart-input::placeholder { color: var(--c-text-muted); }
+
+.calc-mic,
+.calc-smart-go {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid rgba(var(--c-accent-rgb), 0.3);
+  background: rgba(var(--c-accent-rgb), 0.1);
+  color: var(--c-accent-soft);
+  flex-shrink: 0;
+}
+
+.calc-mic:hover,
+.calc-smart-go:hover {
+  background: rgba(var(--c-accent-rgb), 0.2);
+  border-color: rgba(var(--c-accent-rgb), 0.5);
+}
+
+.calc-mic--listening {
+  background: rgba(244, 114, 133, 0.18);
+  border-color: rgba(244, 114, 133, 0.5);
+  color: #fda4af;
+  animation: calc-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes calc-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(244, 114, 133, 0.5); }
+  50% { box-shadow: 0 0 0 6px rgba(244, 114, 133, 0); }
+}
+
+.calc-smart-result {
+  font-family: var(--font-space-grotesk), var(--font-geist-mono), monospace;
+  font-size: 0.85rem;
+  color: var(--c-accent-soft);
+  padding: 0 4px 8px;
+  word-break: break-all;
+}
+
+/* Settings panel */
+.calc-settings-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px 2px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.calc-settings-section h3 {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--c-text-muted);
+  margin: 0 0 0.6rem;
+}
+
+.calc-swatches {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+
+.calc-swatch {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 8px 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  background: rgba(var(--c-surface-rgb), 0.04);
+  border: 1px solid rgba(var(--c-surface-rgb), 0.08);
+  transition: all 0.2s ease;
+}
+
+.calc-swatch:hover { border-color: rgba(var(--c-accent-rgb), 0.35); }
+.calc-swatch--active {
+  border-color: rgba(var(--c-accent-rgb), 0.6);
+  background: rgba(var(--c-accent-rgb), 0.1);
+}
+
+.calc-swatch-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.calc-swatch-label {
+  font-size: 0.78rem;
+  color: var(--c-text);
+  font-weight: 500;
+}
+
+.calc-seg {
+  display: inline-flex;
+  padding: 3px;
+  border-radius: 12px;
+  background: rgba(var(--c-surface-rgb), 0.04);
+  border: 1px solid rgba(var(--c-surface-rgb), 0.06);
+  gap: 2px;
+  width: 100%;
+}
+
+.calc-seg-btn {
+  flex: 1;
+  padding: 6px 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--c-text-muted);
+  background: transparent;
+  border: none;
+  border-radius: 9px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.calc-seg-btn:hover { color: var(--c-text-2); }
+.calc-seg-btn--active {
+  color: var(--c-accent-soft);
+  background: rgba(var(--c-accent-rgb), 0.16);
+  border: 1px solid rgba(var(--c-accent-rgb), 0.4);
+}
+
+.calc-toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: rgba(var(--c-surface-rgb), 0.04);
+  border: 1px solid rgba(var(--c-surface-rgb), 0.08);
+}
+
+.calc-toggle-row span { font-size: 0.82rem; color: var(--c-text); }
+
+.calc-switch {
+  position: relative;
+  width: 42px;
+  height: 24px;
+  border-radius: 9999px;
+  background: rgba(var(--c-surface-rgb), 0.15);
+  border: 1px solid rgba(var(--c-surface-rgb), 0.12);
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.calc-switch::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 9999px;
+  background: var(--c-text-muted);
+  transition: transform 0.22s ease, background 0.2s ease;
+}
+
+.calc-switch--on {
+  background: rgba(var(--c-accent-rgb), 0.3);
+  border-color: rgba(var(--c-accent-rgb), 0.5);
+}
+
+.calc-switch--on::after {
+  transform: translateX(18px);
+  background: var(--c-accent-soft);
+}
+
+/* Header / navbar brand mark (AGC logo) */
+.calc-brand-mark img {
+  display: block;
+  border-radius: 10px;
+}
+
+/* Settings panel — AGC brand footer */
+.calc-settings-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-top: auto;
+  padding: 12px 10px;
+  border-radius: 14px;
+  background: rgba(var(--c-surface-rgb), 0.04);
+  border: 1px solid rgba(var(--c-surface-rgb), 0.08);
+}
+
+.calc-settings-brand-mark {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 8px;
+  border: 1px solid rgba(var(--c-accent-rgb), 0.35);
+}
+
+.calc-settings-brand-name {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--c-text);
+  margin: 0;
+}
+
+.calc-settings-brand-tag {
+  font-size: 0.66rem;
+  color: var(--c-text-muted);
+  margin: 0;
+}
+
+/* Account panel (Google/GitHub sign-in / sign-out) */
+.calc-auth-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 10px;
+  border-radius: 12px;
+  font-size: 0.76rem;
+  line-height: 1.35;
+  color: #fda4af;
+  background: rgba(244, 114, 133, 0.1);
+  border: 1px solid rgba(244, 114, 133, 0.35);
+}
+
+.calc-auth-error span {
+  flex: 1;
+}
+
+.calc-auth-error-dismiss {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  color: inherit;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: opacity 0.15s ease, background 0.15s ease;
+}
+
+.calc-auth-error-dismiss:hover {
+  opacity: 1;
+  background: rgba(244, 114, 133, 0.16);
+}
+
+.calc-auth-loading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 4px;
+  font-size: 0.8rem;
+  color: var(--c-text-muted);
+}
+
+.calc-account-card {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 12px 10px;
+  border-radius: 14px;
+  background: rgba(var(--c-surface-rgb), 0.04);
+  border: 1px solid rgba(var(--c-surface-rgb), 0.08);
+  margin-bottom: 0.75rem;
+}
+
+.calc-account-avatar-img {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  object-fit: cover;
+  border: 1px solid rgba(var(--c-accent-rgb), 0.35);
+}
+
+.calc-account-avatar-fallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--c-accent-soft);
+  background: rgba(var(--c-accent-rgb), 0.16);
+  border: 1px solid rgba(var(--c-accent-rgb), 0.4);
+}
+
+.calc-account-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--c-text);
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.calc-account-email {
+  font-size: 0.72rem;
+  color: var(--c-text-muted);
+  margin: 2px 0 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.calc-account-signout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #fda4af;
+  background: rgba(244, 114, 133, 0.08);
+  border: 1px solid rgba(244, 114, 133, 0.35);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.calc-account-signout:hover {
+  background: rgba(244, 114, 133, 0.14);
+  border-color: rgba(244, 114, 133, 0.5);
+}
+
+.calc-account-signout:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+.calc-account-hint {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin: 0.75rem 0 0;
+  font-size: 0.72rem;
+  line-height: 1.4;
+  color: var(--c-text-muted);
+}
+
+.calc-account-hint--top {
+  margin: 0 0 0.9rem;
+}
+
+/* Wraps the Google + GitHub sign-in buttons, which both reuse the exact
+   same `.calc-google-btn` style below (no per-provider CSS duplicated). */
+.calc-oauth-btn-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.calc-google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 11px 14px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--c-text);
+  background: rgba(var(--c-surface-rgb), 0.05);
+  border: 1px solid rgba(var(--c-accent-rgb), 0.4);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.calc-google-btn:hover:not(:disabled) {
+  color: var(--c-accent-soft);
+  border-color: rgba(var(--c-accent-rgb), 0.65);
+  background: rgba(var(--c-accent-rgb), 0.1);
+}
+
+.calc-google-btn:active:not(:disabled) {
+  transform: translateY(1px) scale(0.98);
+}
+
+.calc-google-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.calc-account-profile-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 8px 10px;
+  margin-bottom: 0.6rem;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--c-accent-soft);
+  background: transparent;
+  border: 1px dashed rgba(var(--c-accent-rgb), 0.35);
+  border-radius: 10px;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.calc-account-profile-link:hover {
+  background: rgba(var(--c-accent-rgb), 0.08);
+  border-color: rgba(var(--c-accent-rgb), 0.55);
+}
+
+.calc-account-profile-link:focus-visible {
+  outline: 2px solid rgba(var(--c-accent-rgb), 0.7);
+  outline-offset: 2px;
+}
+
+.calc-account-guest-id {
+  font-size: 0.68rem;
+  font-family: var(--font-geist-mono, monospace);
+  color: var(--c-text-muted);
+  max-width: 130px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* About panel */
+.calc-about-body {
+  gap: 1.1rem;
+}
+
+.calc-about-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 10px 0 4px;
+  gap: 0.15rem;
+}
+
+.calc-about-mark {
+  width: 72px;
+  height: 72px;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(var(--c-accent-rgb), 0.35);
+  box-shadow: 0 0 28px -8px rgba(var(--c-accent-rgb), 0.5);
+  margin-bottom: 0.6rem;
+}
+
+.calc-about-title {
+  font-size: 1.02rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--c-text);
+  margin: 0;
+}
+
+.calc-about-company {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--c-accent-soft);
+  margin: 0.2rem 0 0;
+}
+
+.calc-about-tagline {
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--c-text-muted);
+  margin: 0.1rem 0 0;
+}
+
+.calc-about-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.calc-about-list li {
+  position: relative;
+  padding-left: 16px;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: var(--c-text-2);
+}
+
+.calc-about-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.5em;
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: var(--c-accent-soft);
+}
+
+.calc-about-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.calc-about-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 10px;
+  border-radius: 10px;
+  background: rgba(var(--c-surface-rgb), 0.04);
+  border: 1px solid rgba(var(--c-surface-rgb), 0.08);
+  font-size: 0.76rem;
+}
+
+.calc-about-meta-row span:first-child { color: var(--c-text-muted); }
+.calc-about-meta-row span:last-child { color: var(--c-text); font-weight: 600; }
+
+.calc-about-footer {
+  text-align: center;
+  font-size: 0.68rem;
+  color: var(--c-text-muted);
+  margin: 0.2rem 0 0;
+}
+
+/* Install banner */
+.calc-install {
+  position: fixed;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%) translateY(120%);
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: linear-gradient(160deg, var(--c-history-1), var(--c-history-2));
+  border: 1px solid rgba(var(--c-accent-rgb), 0.35);
+  box-shadow: 0 12px 40px -12px var(--c-shadow), 0 0 30px -10px rgba(var(--c-accent-rgb), 0.3);
+  backdrop-filter: blur(16px);
+  transition: transform 0.34s cubic-bezier(0.4, 0, 0.2, 1);
+  max-width: calc(100vw - 24px);
+}
+
+.calc-install--show { transform: translateX(-50%) translateY(0); }
+
+.calc-install-mark {
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 7px;
+  border: 1px solid rgba(var(--c-accent-rgb), 0.35);
+}
+
+.calc-install-mark img { display: block; }
+
+.calc-install-text { font-size: 0.78rem; color: var(--c-text); }
+
+.calc-install-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--c-accent-dark);
+  background: linear-gradient(180deg, var(--c-equals-1), var(--c-equals-2));
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.calc-install-dismiss {
+  padding: 5px 10px;
+  font-size: 0.78rem;
+  color: var(--c-text-muted);
+  background: transparent;
+  border: 1px solid rgba(var(--c-surface-rgb), 0.12);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* ============================================================
+   Boot splash screen — premium AGC intro animation
+   ============================================================ */
+
+.calc-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  background: radial-gradient(60% 50% at 50% 38%, var(--c-bg) 0%, var(--c-bg-deep) 100%);
+  overflow: hidden;
+  animation: calc-splash-fade-in 0.4s ease-out both;
+}
+
+.calc-splash-out {
+  animation: calc-splash-fade-out 0.55s cubic-bezier(0.4, 0, 0.2, 1) both;
+  pointer-events: none;
+}
+
+.calc-splash-glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(45% 35% at 50% 36%, rgba(var(--c-accent-rgb), 0.16), transparent 70%);
+  animation: calc-splash-glow-breathe 2.4s ease-in-out infinite;
+}
+
+.calc-splash-mark-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 96px;
+  height: 96px;
+}
+
+.calc-splash-mark {
+  position: relative;
+  z-index: 2;
+  width: 96px;
+  height: 96px;
+  overflow: hidden;
+  border-radius: 24px;
+  border: 1px solid rgba(var(--c-accent-rgb), 0.4);
+  box-shadow:
+    0 0 1px rgba(var(--c-accent-rgb), 0.6),
+    0 18px 60px -16px rgba(var(--c-accent-rgb), 0.55);
+  animation: calc-splash-mark-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.calc-splash-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 26px;
+  border: 1px solid rgba(var(--c-accent-rgb), 0.55);
+  animation: calc-splash-ring-expand 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+}
+
+.calc-splash-ring-2 {
+  animation-delay: 0.45s;
+  border-color: rgba(var(--c-accent-rgb), 0.35);
+}
+
+.calc-splash-word {
+  z-index: 2;
+  margin: 0;
+  font-family: var(--font-space-grotesk, inherit);
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.42em;
+  color: var(--c-text);
+  animation: calc-splash-text-in 0.6s ease-out 0.25s both;
+}
+
+.calc-splash-word span {
+  background: linear-gradient(180deg, var(--c-accent-soft), var(--c-accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.calc-splash-tag {
+  z-index: 2;
+  margin: 0;
+  font-size: 0.66rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--c-text-muted);
+  animation: calc-splash-text-in 0.6s ease-out 0.4s both;
+}
+
+.calc-splash-shimmer {
+  position: relative;
+  z-index: 2;
+  margin-top: 6px;
+  width: 120px;
+  height: 2px;
+  border-radius: 2px;
+  background: rgba(var(--c-accent-rgb), 0.16);
+  overflow: hidden;
+  animation: calc-splash-text-in 0.6s ease-out 0.5s both;
+}
+
+.calc-splash-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, var(--c-accent-soft), transparent);
+  animation: calc-splash-shimmer-sweep 1.3s ease-in-out 0.6s infinite;
+}
+
+@keyframes calc-splash-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes calc-splash-fade-out {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(1.03); }
+}
+
+@keyframes calc-splash-glow-breathe {
+  0%, 100% { opacity: 0.75; }
+  50% { opacity: 1; }
+}
+
+@keyframes calc-splash-mark-in {
+  from { opacity: 0; transform: scale(0.72); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes calc-splash-ring-expand {
+  0% { opacity: 0.9; transform: scale(0.8); }
+  100% { opacity: 0; transform: scale(1.9); }
+}
+
+@keyframes calc-splash-text-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes calc-splash-shimmer-sweep {
+  0% { transform: translateX(-120%); }
+  100% { transform: translateX(340%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .calc-splash,
+  .calc-splash-out,
+  .calc-splash-glow,
+  .calc-splash-mark,
+  .calc-splash-ring,
+  .calc-splash-ring-2,
+  .calc-splash-word,
+  .calc-splash-tag,
+  .calc-splash-shimmer,
+  .calc-splash-shimmer::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* ============================================================
+   Profile page (/profile) — reuses the existing calc-glass /
+   calc-settings-section / calc-swatch / calc-seg / calc-switch /
+   calc-google-btn / calc-account-signout / calc-auth-error
+   primitives already defined above, plus a small set of
+   profile-specific classes below (theme-driven via --c-* vars,
+   same as every other panel in this app).
+   ============================================================ */
+
+.profile-shell {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.profile-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--c-text-2);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.profile-back-link:hover {
+  color: var(--c-accent-soft);
+}
+
+.profile-back-link:focus-visible {
+  outline: 2px solid rgba(var(--c-accent-rgb), 0.7);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.profile-card {
+  padding: 1.5rem 1.25rem;
+}
+
+@media (min-width: 480px) {
+  .profile-card {
+    padding: 2rem 1.75rem;
+  }
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.profile-avatar-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.profile-avatar-img {
+  width: 88px;
+  height: 88px;
+  border-radius: 9999px;
+  object-fit: cover;
+  border: 2px solid rgba(var(--c-accent-rgb), 0.4);
+  box-shadow: 0 0 0 4px rgba(var(--c-accent-rgb), 0.08);
+}
+
+.profile-avatar-fallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 88px;
+  height: 88px;
+  border-radius: 9999px;
+  font-size: 2rem;
+  font-weight: 700;
+  font-family: var(--font-space-grotesk, inherit);
+  color: var(--c-accent-soft);
+  background: rgba(var(--c-accent-rgb), 0.16);
+  border: 2px solid rgba(var(--c-accent-rgb), 0.4);
+}
+
+.profile-avatar-edit-btn {
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 9999px;
+  color: var(--c-accent-dark);
+  background: linear-gradient(160deg, var(--c-accent-soft), var(--c-accent));
+  border: 2px solid var(--c-bg);
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.profile-avatar-edit-btn:hover:not(:disabled) {
+  transform: scale(1.06);
+}
+
+.profile-avatar-edit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.profile-avatar-edit-btn:focus-visible {
+  outline: 2px solid rgba(var(--c-accent-rgb), 0.85);
+  outline-offset: 2px;
+}
+
+.profile-heading {
+  min-width: 0;
+  flex: 1;
+}
+
+.profile-name {
+  margin: 0;
+  font-family: var(--font-space-grotesk, inherit);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--c-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.profile-email {
+  margin: 3px 0 0;
+  font-size: 0.8rem;
+  color: var(--c-text-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.profile-email--muted {
+  color: var(--c-text-muted);
+  font-style: italic;
+}
+
+.profile-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 0.5rem;
+  padding: 3px 9px;
+  border-radius: 9999px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.profile-badge--live {
+  color: var(--c-accent-soft);
+  background: rgba(var(--c-accent-rgb), 0.14);
+  border: 1px solid rgba(var(--c-accent-rgb), 0.4);
+}
+
+.profile-badge--guest {
+  color: var(--c-text-2);
+  background: rgba(var(--c-surface-rgb), 0.06);
+  border: 1px solid rgba(var(--c-surface-rgb), 0.14);
+}
+
+.profile-flash {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0.9rem 0 0;
+  padding: 8px 10px;
+  border-radius: 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--c-accent-soft);
+  background: rgba(var(--c-accent-rgb), 0.1);
+  border: 1px solid rgba(var(--c-accent-rgb), 0.32);
+}
+
+.profile-section h2 {
+  margin: 0 0 0.7rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-text-muted);
+}
+
+.profile-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.7rem;
+}
+
+.profile-section-head h2 {
+  margin: 0;
+}
+
+.profile-edit-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--c-accent-soft);
+  background: rgba(var(--c-accent-rgb), 0.1);
+  border: 1px solid rgba(var(--c-accent-rgb), 0.35);
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.profile-edit-toggle:hover {
+  background: rgba(var(--c-accent-rgb), 0.18);
+}
+
+.profile-edit-toggle:focus-visible,
+.profile-name-input:focus-visible,
+.profile-copy-btn:focus-visible,
+.profile-link-btn:focus-visible,
+.profile-cancel-btn:focus-visible,
+.profile-save-btn:focus-visible {
+  outline: 2px solid rgba(var(--c-accent-rgb), 0.75);
+  outline-offset: 2px;
+}
+
+.profile-hint {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.profile-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.profile-field-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--c-text-2);
+}
+
+.profile-name-input {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 0.88rem;
+  color: var(--c-text);
+  background: rgba(var(--c-surface-rgb), 0.05);
+  border: 1px solid rgba(var(--c-surface-rgb), 0.14);
+  border-radius: 12px;
+}
+
+.profile-name-input::placeholder {
+  color: var(--c-text-muted);
+}
+
+.profile-avatar-error {
+  margin: 0;
+  font-size: 0.74rem;
+  color: #fda4af;
+}
+
+.profile-edit-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 0.2rem;
+}
+
+.profile-edit-actions-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.profile-link-btn {
+  padding: 6px 2px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: #fda4af;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.profile-cancel-btn {
+  padding: 8px 14px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--c-text-2);
+  background: transparent;
+  border: 1px solid rgba(var(--c-surface-rgb), 0.16);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.profile-cancel-btn:hover {
+  color: var(--c-text);
+  border-color: rgba(var(--c-surface-rgb), 0.3);
+}
+
+.profile-save-btn {
+  padding: 8px 16px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--c-accent-dark);
+  background: linear-gradient(160deg, var(--c-accent-soft), var(--c-accent));
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.profile-save-btn:hover {
+  filter: brightness(1.06);
+}
+
+.profile-save-btn:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+.profile-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.7rem 0.9rem;
+  margin: 0 0 0.9rem;
+}
+
+.profile-info-item--wide {
+  grid-column: 1 / -1;
+}
+
+.profile-info-item dt {
+  margin: 0 0 2px;
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--c-text-muted);
+}
+
+.profile-info-item dd {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--c-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.profile-info-id {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.profile-info-id span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--font-geist-mono, monospace);
+  font-size: 0.72rem;
+}
+
+.profile-copy-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  color: var(--c-text-muted);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.profile-copy-btn:hover {
+  color: var(--c-accent-soft);
+  background: rgba(var(--c-accent-rgb), 0.12);
+}
+
+.profile-oauth-group {
+  margin-top: 0.25rem;
+}
+
+.profile-signout {
+  margin-top: 0.25rem;
+}
+
+.profile-subsection {
+  margin-bottom: 1rem;
+}
+
+.profile-subsection:last-child {
+  margin-bottom: 0;
+}
+
+.profile-subsection-label {
+  margin: 0 0 0.5rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--c-text-2);
+}
+
+@media (max-width: 360px) {
+  .profile-header {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+}
+
+/* Cloud Backup section (Task 19) — Automatic Backup / Backup Status / Last
+   Backup Time, on the Profile page's "Account settings" area. Reuses this
+   app's existing --c-* theme tokens (same as every other panel/section)
+   so it re-themes correctly across all four AGC presets with zero new
+   hardcoded colors. Purely additive — no existing profile-* rule above
+   this block was changed. */
+.profile-backup-summary {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.7rem 0.85rem;
+  margin-bottom: 0.85rem;
+  border-radius: 12px;
+  background: rgba(var(--c-surface-rgb), 0.04);
+  border: 1px solid rgba(var(--c-surface-rgb), 0.08);
+}
+
+.profile-backup-summary-icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: rgba(var(--c-accent-rgb), 0.14);
+  color: var(--c-accent-soft);
+}
+
+.profile-backup-summary-icon--error {
+  background: rgba(244, 63, 94, 0.14);
+  color: rgb(244 63 94 / 0.9);
+}
+
+.profile-backup-summary-text {
+  min-width: 0;
+  flex: 1;
+}
+
+.profile-backup-summary-title {
+  margin: 0;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--c-text);
+}
+
+.profile-backup-summary-sub {
+  margin: 2px 0 0;
+  font-size: 0.72rem;
+  color: var(--c-text-muted);
+}
+
+.profile-backup-actions {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.profile-backup-now-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+}
+
+.profile-backup-now-btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+  filter: none;
+}
+
+.profile-backup-restore-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.profile-backup-restore-btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.profile-backup-restore-btn--confirm {
+  color: #fda4af;
+  border-color: rgba(244, 114, 133, 0.5);
+  background: rgba(244, 114, 133, 0.12);
+}
+
+.profile-backup-auto-note {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 0.85rem;
+  font-size: 0.74rem;
+  color: var(--c-text-muted);
+}
+
+.profile-backup-auto-note--on {
+  color: var(--c-accent-soft);
+}
+
+.profile-backup-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.profile-backup-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.6rem;
+  border-radius: 9px;
+  background: rgba(var(--c-surface-rgb), 0.04);
+  border: 1px solid rgba(var(--c-surface-rgb), 0.07);
+}
+
+.profile-backup-row-icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  color: var(--c-text-muted);
+}
+
+.profile-backup-row-icon--synced {
+  color: var(--c-accent-soft);
+}
+
+.profile-backup-row-icon--error {
+  color: rgb(244 63 94 / 0.85);
+}
+
+.profile-backup-row-icon--restoring,
+.profile-backup-row-icon--syncing {
+  color: var(--c-accent-soft);
+}
+
+.profile-backup-row-text {
+  min-width: 0;
+  flex: 1;
+}
+
+.profile-backup-row-label {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--c-text);
+}
+
+.profile-backup-row-time {
+  margin: 1px 0 0;
+  font-size: 0.68rem;
+  color: var(--c-text-muted);
+}
+
+.profile-backup-row-status {
+  flex-shrink: 0;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--c-text-muted);
+}
+
+.profile-backup-row-status--synced {
+  color: var(--c-accent-soft);
+}
+
+.profile-backup-row-status--error {
+  color: rgb(244 63 94 / 0.85);
+}
+
+.profile-backup-guest-note {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--c-text-muted);
+  line-height: 1.5;
+}
+
+/* Sync Status section (Sync Status task) — Last Sync / Last Backup /
+   Current Sync State / Sync Progress, on the Profile page's Account
+   settings area, right above the existing Cloud Backup section. Reuses
+   this app's existing --c-* theme tokens (same as .profile-backup-* above)
+   so it re-themes correctly across all four AGC presets with zero new
+   hardcoded colors. Purely additive — no existing rule above this block
+   was changed. */
+.profile-sync-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin-bottom: 0.9rem;
+}
+
+@media (max-width: 480px) {
+  .profile-sync-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.profile-sync-tile {
+  padding: 0.6rem 0.7rem;
+  border-radius: 10px;
+  background: rgba(var(--c-surface-rgb), 0.04);
+  border: 1px solid rgba(var(--c-surface-rgb), 0.07);
+  min-width: 0;
+}
+
+.profile-sync-tile-label {
+  margin: 0 0 0.35rem;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--c-text-muted);
+}
+
+.profile-sync-tile-value {
+  margin: 0;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--c-text);
+  overflow-wrap: anywhere;
+}
+
+.profile-sync-state-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--c-text-2);
+  background: rgba(var(--c-surface-rgb), 0.06);
+  border: 1px solid rgba(var(--c-surface-rgb), 0.1);
+}
+
+.profile-sync-state-pill--synced {
+  color: var(--c-accent-soft);
+  background: rgba(var(--c-accent-rgb), 0.14);
+  border-color: rgba(var(--c-accent-rgb), 0.35);
+}
+
+.profile-sync-state-pill--syncing,
+.profile-sync-state-pill--restoring {
+  color: var(--c-accent-soft);
+  background: rgba(var(--c-accent-rgb), 0.1);
+  border-color: rgba(var(--c-accent-rgb), 0.28);
+}
+
+.profile-sync-state-pill--error {
+  color: rgb(244 63 94 / 0.9);
+  background: rgba(244, 63, 94, 0.12);
+  border-color: rgba(244, 63, 94, 0.32);
+}
+
+.profile-sync-state-pill--guest,
+.profile-sync-state-pill--disabled {
+  color: var(--c-text-muted);
+}
+
+.profile-sync-progress-block {
+  margin-bottom: 0.6rem;
+}
+
+.profile-sync-progress-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+}
+
+.profile-sync-progress-fraction {
+  flex-shrink: 0;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--c-text-2);
+}
+
+.profile-sync-progress-track {
+  position: relative;
+  width: 100%;
+  height: 8px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(var(--c-surface-rgb), 0.08);
+  border: 1px solid rgba(var(--c-surface-rgb), 0.08);
+}
+
+.profile-sync-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(var(--c-accent-rgb), 0.55), rgba(var(--c-accent-rgb), 0.95));
+  box-shadow: 0 0 12px -2px rgba(var(--c-accent-rgb), 0.6);
+  transition: width 0.5s ease;
+}
+
+.profile-sync-progress-fill--active {
+  background-size: 200% 100%;
+  animation: profile-sync-progress-shimmer 1.3s linear infinite;
+}
+
+@keyframes profile-sync-progress-shimmer {
+  0% { background-position: 0% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.profile-sync-guest-note {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--c-text-muted);
+  line-height: 1.5;
+}
+
+/* Task 24 (Multi-device Sync) — additive only, no existing .profile-sync-*
+   rule above this was changed. Reuses the same --c-* tokens as
+   .profile-sync-guest-note so it re-themes correctly across all four AGC
+   presets. */
+.profile-sync-live-note {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--c-text-muted);
+  line-height: 1.5;
+  display: flex;
+  align-items: center;
+}
+
+/* ============================================================
+   AI Chat interface (Task 27 — UI scaffold only).
+   Additive only — nothing above this block was changed. Reuses the
+   existing --c-* theme tokens (and `.calc-glass` / `.calc-util-btn` /
+   `.profile-back-link` / `.u-divider`) so the chat preview re-themes
+   correctly across all four AGC presets and matches the calculator's
+   own glassmorphism language. Not connected to any AI provider.
+   ============================================================ */
+
+.chat-shell {
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.chat-back-link {
+  margin-bottom: 0.75rem;
+}
+
+.chat-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: min(76vh, 720px);
+  padding: 0;
+  overflow: hidden;
+}
+
+.chat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.9rem 1rem 0;
+}
+
+.chat-header-title {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-width: 0;
+}
+
+.chat-header-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  color: var(--c-accent-soft);
+  background: rgba(var(--c-accent-rgb), 0.12);
+  border: 1px solid rgba(var(--c-accent-rgb), 0.3);
+}
+
+.chat-header-name {
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.chat-header-sub {
+  font-size: 0.7rem;
+  line-height: 1.3;
+}
+
+.chat-card > .u-divider {
+  margin: 0.75rem 1rem 0;
+  width: auto;
+}
+
+/* Message List */
+.chat-messages-wrap {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-messages {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0.9rem 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Auto Scroll — "jump to latest" pill shown when the person has scrolled
+   away from the bottom while new messages arrive. */
+.chat-scroll-btn {
+  position: absolute;
+  left: 50%;
+  bottom: 0.75rem;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.8rem;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--c-accent-dark);
+  background: linear-gradient(135deg, var(--c-equals-1), var(--c-equals-2) 70%, var(--c-equals-3));
+  border: none;
+  border-radius: 999px;
+  box-shadow: 0 8px 20px -8px rgba(var(--c-accent-rgb), 0.5);
+  cursor: pointer;
+  transition: filter 0.15s ease;
+}
+
+.chat-scroll-btn:hover {
+  filter: brightness(1.06);
+}
+
+.chat-messages-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin-top: auto;
+}
+
+.chat-empty {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.5rem;
+  padding: 2rem 1rem;
+}
+
+.chat-empty-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 9999px;
+  color: var(--c-accent-soft);
+  background: rgba(var(--c-accent-rgb), 0.1);
+  border: 1px solid rgba(var(--c-accent-rgb), 0.25);
+  margin-bottom: 0.25rem;
+}
+
+.chat-empty-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--c-text);
+}
+
+.chat-empty-sub {
+  font-size: 0.78rem;
+  color: var(--c-text-muted);
+  max-width: 26rem;
+  line-height: 1.5;
+}
+
+/* Message rows */
+.chat-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.chat-row--user {
+  justify-content: flex-end;
+}
+
+.chat-row--assistant {
+  justify-content: flex-start;
+}
+
+.chat-row--system {
+  justify-content: center;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.chat-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 9999px;
+}
+
+.chat-avatar--assistant {
+  color: var(--c-accent-soft);
+  background: rgba(var(--c-accent-rgb), 0.14);
+  border: 1px solid rgba(var(--c-accent-rgb), 0.3);
+}
+
+.chat-avatar--user {
+  color: var(--c-text-2);
+  background: rgba(var(--c-surface-rgb), 0.08);
+  border: 1px solid rgba(var(--c-surface-rgb), 0.1);
+}
+
+.chat-bubble-col {
+  display: flex;
+  flex-direction: column;
+  max-width: 78%;
+}
+
+.chat-row--user .chat-bubble-col {
+  align-items: flex-end;
+}
+
+.chat-row--assistant .chat-bubble-col {
+  align-items: flex-start;
+}
+
+.chat-bubble {
+  padding: 0.6rem 0.85rem;
+  border-radius: 16px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+.chat-bubble--user {
+  color: var(--c-accent-dark);
+  background: linear-gradient(135deg, var(--c-equals-1), var(--c-equals-2) 70%, var(--c-equals-3));
+  border-bottom-right-radius: 4px;
+  box-shadow: 0 8px 20px -10px rgba(var(--c-accent-rgb), 0.45);
+}
+
+.chat-bubble--assistant {
+  color: var(--c-text);
+  background: linear-gradient(160deg, var(--c-btn-1), var(--c-btn-2));
+  border: 1px solid var(--c-btn-border);
+  border-bottom-left-radius: 4px;
+}
+
+.chat-bubble-text {
+  margin: 0;
+}
+
+.chat-timestamp {
+  font-size: 0.65rem;
+  color: var(--c-text-muted);
+  padding: 0 0.2rem;
+}
+
+.chat-timestamp--user {
+  text-align: right;
+}
+
+/* Copy Response — small icon button beside the timestamp (or system
+   notice), reusing the calculator's own copy/checkmark pattern. */
+.chat-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.25rem;
+}
+
+.chat-meta-row--user {
+  justify-content: flex-end;
+}
+
+.chat-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  color: var(--c-text-muted);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.chat-copy-btn:hover {
+  color: var(--c-accent-soft);
+  background: rgba(var(--c-accent-rgb), 0.12);
+}
+
+.chat-copy-btn--copied {
+  color: var(--c-accent-soft);
+}
+
+.chat-system-notice {
+  margin: 0.15rem 0;
+  padding: 0.45rem 0.8rem;
+  font-size: 0.72rem;
+  text-align: center;
+  color: var(--c-text-muted);
+  background: rgba(var(--c-surface-rgb), 0.04);
+  border: 1px dashed rgba(var(--c-accent-rgb), 0.28);
+  border-radius: 999px;
+}
+
+/* Loading State — typing indicator bubble */
+.chat-bubble--typing {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0.7rem 0.9rem;
+}
+
+.chat-typing-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: var(--c-accent-soft);
+  opacity: 0.5;
+  animation: chat-typing-bounce 1.1s ease-in-out infinite;
+}
+
+.chat-typing-dot:nth-child(2) { animation-delay: 0.15s; }
+.chat-typing-dot:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes chat-typing-bounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+  30% { transform: translateY(-4px); opacity: 1; }
+}
+
+/* Chat Input */
+.chat-input-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-top: 1px solid var(--c-card-border);
+}
+
+.chat-textarea {
+  flex: 1;
+  resize: none;
+  max-height: 160px;
+  min-height: 40px;
+  padding: 0.55rem 0.8rem;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: var(--c-text);
+  background: rgba(var(--c-surface-rgb), 0.04);
+  border: 1px solid rgba(var(--c-surface-rgb), 0.09);
+  border-radius: 14px;
+  font-family: inherit;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.chat-textarea::placeholder {
+  color: var(--c-text-muted);
+}
+
+.chat-textarea:focus-visible {
+  outline: none;
+  border-color: rgba(var(--c-accent-rgb), 0.5);
+  background: rgba(var(--c-surface-rgb), 0.06);
+}
+
+.chat-textarea:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.chat-send-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  color: var(--c-text-muted);
+  background: rgba(var(--c-surface-rgb), 0.04);
+  border: 1px solid rgba(var(--c-surface-rgb), 0.07);
+  cursor: not-allowed;
+  transition: all 0.15s ease;
+}
+
+.chat-send-btn--active {
+  color: var(--c-accent-dark);
+  background: linear-gradient(135deg, var(--c-equals-1), var(--c-equals-2) 70%, var(--c-equals-3));
+  border-color: transparent;
+  cursor: pointer;
+  box-shadow: 0 8px 20px -10px rgba(var(--c-accent-rgb), 0.5);
+}
+
+.chat-send-btn--active:hover {
+  filter: brightness(1.06);
+}
+
+.chat-send-btn--active:active {
+  transform: translateY(1px) scale(0.96);
+}
+
+.chat-send-btn:disabled {
+  cursor: not-allowed;
+}
+
+.chat-send-btn:focus-visible {
+  outline: 2px solid rgba(var(--c-accent-rgb), 0.7);
+  outline-offset: 1px;
+}
+
+/* Mobile responsive layout */
+@media (max-width: 640px) {
+  .chat-shell {
+    max-width: 100%;
+  }
+
+  .chat-card {
+    height: calc(100dvh - 9.5rem);
+    border-radius: 20px;
+  }
+
+  .chat-bubble-col {
+    max-width: 86%;
+  }
+}
+
+@media (max-width: 380px) {
+  .chat-header-sub {
+    display: none;
+  }
+
+  .chat-bubble-col {
+    max-width: 90%;
+  }
+}
+
+/* ============================================================
+   AI Calculator panel (Task 30) — Natural Language Calculations,
+   Formula Explanation, Step-by-step Solutions. Additive only: reuses
+   the existing .calc-settings-panel/.calc-settings-body shell and the
+   same --c-* theme tokens every AGC preset already re-themes, so no
+   existing rule above this block was touched.
+   ============================================================ */
+.calc-aic-panel {
+  width: min(400px, 94vw);
+}
+
+.calc-aic-body {
+  gap: 1rem;
+}
+
+.calc-aic-intro {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.calc-aic-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.calc-aic-input {
+  width: 100%;
+  resize: vertical;
+  min-height: 3.2rem;
+  padding: 10px 12px;
+  font-size: 0.85rem;
+  color: var(--c-text);
+  background: rgba(var(--c-surface-rgb), 0.04);
+  border: 1px solid rgba(var(--c-accent-rgb), 0.22);
+  border-radius: 14px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.calc-aic-input:focus {
+  border-color: rgba(var(--c-accent-rgb), 0.55);
+}
+
+.calc-aic-input::placeholder {
+  color: var(--c-text-muted);
+}
+
+.calc-aic-ask {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  align-self: flex-end;
+  padding: 8px 16px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--c-accent-soft);
+  background: rgba(var(--c-accent-rgb), 0.12);
+  border: 1px solid rgba(var(--c-accent-rgb), 0.4);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.calc-aic-ask:hover:not(:disabled) {
+  background: rgba(var(--c-accent-rgb), 0.22);
+  border-color: rgba(var(--c-accent-rgb), 0.6);
+}
+
+.calc-aic-ask:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.calc-aic-examples h3 {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--c-text-muted);
+  margin: 0 0 0.6rem;
+}
+
+.calc-aic-chips {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.calc-aic-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 8px 10px;
+  font-size: 0.76rem;
+  text-align: left;
+  color: var(--c-text);
+  background: rgba(var(--c-surface-rgb), 0.04);
+  border: 1px solid rgba(var(--c-surface-rgb), 0.08);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.calc-aic-chip:hover {
+  border-color: rgba(var(--c-accent-rgb), 0.35);
+  color: var(--c-accent-soft);
+}
+
+.calc-aic-chip svg {
+  flex-shrink: 0;
+  color: var(--c-accent-soft);
+}
+
+.calc-aic-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 0.6rem 0;
+}
+
+.calc-aic-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: var(--c-accent-soft);
+  opacity: 0.5;
+  animation: chat-typing-bounce 1.1s ease-in-out infinite;
+}
+
+.calc-aic-dot:nth-child(2) { animation-delay: 0.15s; }
+.calc-aic-dot:nth-child(3) { animation-delay: 0.3s; }
+
+.calc-aic-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.6rem 0.75rem;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: #fda4af;
+  background: rgba(244, 63, 94, 0.1);
+  border: 1px solid rgba(244, 63, 94, 0.3);
+  border-radius: 12px;
+}
+
+.calc-aic-result {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-top: 0.25rem;
+  border-top: 1px solid rgba(var(--c-surface-rgb), 0.08);
+}
+
+.calc-aic-result-expr {
+  font-family: var(--font-space-grotesk), var(--font-geist-mono), monospace;
+  font-size: 0.85rem;
+  color: var(--c-text-muted);
+  word-break: break-all;
+}
+
+.calc-aic-result-value {
+  font-family: var(--font-space-grotesk), var(--font-geist-mono), monospace;
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.1;
+  word-break: break-all;
+  background: linear-gradient(135deg, var(--c-accent), var(--c-accent-soft));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 18px rgba(var(--c-accent-rgb), 0.25));
+}
+
+.calc-aic-insert {
+  align-self: flex-start;
+  padding: 7px 14px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--c-accent-soft);
+  background: rgba(var(--c-accent-rgb), 0.1);
+  border: 1px solid rgba(var(--c-accent-rgb), 0.35);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.calc-aic-insert:hover {
+  background: rgba(var(--c-accent-rgb), 0.2);
+  border-color: rgba(var(--c-accent-rgb), 0.55);
+}
+
+.calc-aic-section {
+  padding-top: 0.5rem;
+}
+
+.calc-aic-explanation {
+  font-size: 0.8rem;
+  line-height: 1.55;
+  color: var(--c-text);
+  margin: 0;
+}
+
+.calc-aic-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin: 0;
+  padding-left: 1.1rem;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--c-text);
+}
+
+.calc-aic-steps li {
+  padding-left: 0.2rem;
+}
+
+.calc-aic-provider {
+  font-size: 0.68rem;
+  color: var(--c-text-muted);
+  margin: 0;
+  text-align: right;
+}

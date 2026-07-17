@@ -1,0 +1,10 @@
+# Supabase CLI project config.
+# Minimal, migrations-only config — this project doesn't run the local
+# Supabase stack (`supabase start`) in this sandbox; it only uses the CLI
+# to apply `supabase/migrations/` to a real, linked project via
+# `supabase db push` (see supabase/README.md).
+
+project_id = "agc-premium-calculator"
+
+[db.migrations]
+schema_paths = []
