@@ -149,13 +149,13 @@ export function getClaudeConfig(): ProviderEnvConfig {
 
 /**
  * Gemini (Google) configuration — `GEMINI_API_KEY` (required for use),
- * `GEMINI_MODEL` (defaults to `"gemini-2.5-flash"` when unset), and an
+ * `GEMINI_MODEL` (defaults to `"gemini-flash-latest"` when unset), and an
  * optional `GEMINI_BASE_URL`.
  */
 export function getGeminiConfig(): ProviderEnvConfig {
   return {
     apiKey: readEnv("GEMINI_API_KEY"),
-    model: readEnv("GEMINI_MODEL") ?? "gemini-2.5-flash",
+    model: readEnv("GEMINI_MODEL") ?? "gemini-flash-latest",
     baseUrl: readEnv("GEMINI_BASE_URL"),
   };
 }

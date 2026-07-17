@@ -71,7 +71,7 @@ identifies which vendor produced the reply beyond its registered name.
      `ANTHROPIC_MODEL` (defaults to `"claude-sonnet-4-6"`),
      `ANTHROPIC_BASE_URL` (optional).
    - **Gemini (Google)** — `GEMINI_API_KEY` (required), `GEMINI_MODEL`
-     (defaults to `"gemini-2.5-flash"`), `GEMINI_BASE_URL` (optional).
+     (defaults to `"gemini-flash-latest"`), `GEMINI_BASE_URL` (optional).
    - **Never commit a real key value** — these files are for local
      configuration only. `.env` is already git-ignored by this project.
 4. Restart the dev server (env vars are read at request time via
