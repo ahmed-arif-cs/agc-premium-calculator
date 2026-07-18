@@ -140,7 +140,7 @@ function mapOpenAIHttpError(status: number, bodyText: string | undefined): AIPro
     return new AIProviderError("OpenAI rejected the configured API key.", "authentication_failed", detail);
   }
   if (status === 429) {
-    return new AIProviderError("OpenAI rate-limited this request.", "rate_limited", detail);
+    return new AIProviderError("AGC Premium is currently handling a high volume of requests. Please try again shortly.", "rate_limited", detail);
   }
   if (status >= 400 && status < 500) {
     return new AIProviderError("OpenAI rejected the request as invalid.", "invalid_request", detail);
