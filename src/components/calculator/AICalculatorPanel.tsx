@@ -254,7 +254,7 @@ export function AICalculatorPanel({ open, onClose, calc }: AICalculatorPanelProp
                 </div>
               ) : null}
 
-              <p className="calc-aic-provider">Powered by your configured AI provider ({data.provider}).</p>
+              <p className="calc-aic-provider">Powered by AGC Premium AI.</p>
             </div>
           ) : null}
         </div>
