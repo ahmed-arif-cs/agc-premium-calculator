@@ -13,6 +13,13 @@
  * with zero Supabase project configured. Errors only surface if/when
  * something actually tries to create a Supabase client without the
  * required variables set, which today is nothing (no login UI exists).
+ *
+ * NOTE: `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` are
+ * read via *literal* `process.env.NEXT_PUBLIC_...` access (not a helper
+ * that does `process.env[name]`) because Next.js only inlines
+ * `NEXT_PUBLIC_` variables into the browser bundle when the property
+ * name is static at build time. Dynamic bracket access always evaluates
+ * to `undefined` in client code, regardless of what's set in Vercel.
  */
 
 function readEnv(name: string): string | undefined {
@@ -20,8 +27,7 @@ function readEnv(name: string): string | undefined {
   return value && value.length > 0 ? value : undefined;
 }
 
-function required(name: string): string {
-  const value = readEnv(name);
+function required(name: string, value: string | undefined): string {
   if (!value) {
     throw new Error(
       `Missing required environment variable "${name}". Copy .env.example to .env ` +
@@ -33,12 +39,12 @@ function required(name: string): string {
 
 /** Project URL, e.g. `https://xyzcompany.supabase.co`. Safe to expose to the browser. */
 export function getSupabaseUrl(): string {
-  return required("NEXT_PUBLIC_SUPABASE_URL");
+  return required("NEXT_PUBLIC_SUPABASE_URL", process.env.NEXT_PUBLIC_SUPABASE_URL);
 }
 
 /** Public "anon" key. Safe to expose to the browser (Row Level Security enforces access). */
 export function getSupabaseAnonKey(): string {
-  return required("NEXT_PUBLIC_SUPABASE_ANON_KEY");
+  return required("NEXT_PUBLIC_SUPABASE_ANON_KEY", process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
 }
 
 /**
@@ -49,7 +55,7 @@ export function getSupabaseAnonKey(): string {
  * its own env accessor.
  */
 export function getSupabaseServiceRoleKey(): string {
-  return required("SUPABASE_SERVICE_ROLE_KEY");
+  return required("SUPABASE_SERVICE_ROLE_KEY", readEnv("SUPABASE_SERVICE_ROLE_KEY"));
 }
 
 /**
@@ -60,5 +66,7 @@ export function getSupabaseServiceRoleKey(): string {
  * the guest-first calculator experience.
  */
 export function isSupabaseConfigured(): boolean {
-  return Boolean(readEnv("NEXT_PUBLIC_SUPABASE_URL") && readEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY"));
+  return Boolean(
+    process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  );
 }
