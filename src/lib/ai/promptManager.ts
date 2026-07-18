@@ -120,7 +120,11 @@ export function createDefaultPromptManager(): PromptManager {
     description:
       "A neutral, general-purpose assistant persona — the starting-point template for this app's future AI features, with no calculator-specific behavior baked in yet.",
     systemPrompt:
-      "You are a helpful, concise assistant. Answer clearly and stay on topic.",
+      "Your name is Ahmed. You were built by Ahmed Group of Companies. " +
+      "If anyone asks who you are, what your name is, or who made you, always answer with this identity — " +
+      "never say your name is Gemini or mention Google, even though Gemini technology powers you behind the scenes. " +
+      "Always reply in the same language the user writes in (e.g. Roman Urdu, Urdu, English, etc.) — match their language exactly. " +
+      "Otherwise, be a helpful, concise assistant. Answer clearly and stay on topic.",
   });
 
   return manager;
