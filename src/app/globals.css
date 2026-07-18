@@ -3697,3 +3697,9 @@ body {
   margin: 0;
   text-align: right;
 }
+.chat-bubble-image {
+  max-width: 220px;
+  border-radius: 12px;
+  margin-top: 6px;
+  display: block;
+}

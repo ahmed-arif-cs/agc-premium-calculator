@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Bot, Check, Copy, UserRound } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
@@ -14,20 +14,55 @@ function formatTime(ts: number): string {
   }
 }
 
+/**
+ * Splits message content on markdown image syntax (![alt](/ahmed/x.jpg))
+ * and renders each text chunk as a paragraph and each image as an <img>.
+ * Only local /ahmed/ paths render as images — anything else stays plain
+ * text, so this never becomes a generic "render arbitrary URLs" feature.
+ */
+function renderMessageContent(content: string) {
+  const imageRegex = /!\[([^\]]*)\]\((\/ahmed\/[^\s)]+)\)/g;
+  const parts: ReactNode[] = [];
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+  let key = 0;
+
+  while ((match = imageRegex.exec(content)) !== null) {
+    const [fullMatch, alt, src] = match;
+    if (match.index > lastIndex) {
+      const text = content.slice(lastIndex, match.index).trim();
+      if (text) {
+        parts.push(
+          <p key={`text-${key++}`} className="chat-bubble-text">
+            {text}
+          </p>
+        );
+      }
+    }
+    parts.push(
+      <img key={`img-${key++}`} src={src} alt={alt || "Ahmed"} className="chat-bubble-image" />
+    );
+    lastIndex = match.index + fullMatch.length;
+  }
+
+  if (lastIndex < content.length) {
+    const text = content.slice(lastIndex).trim();
+    if (text) {
+      parts.push(
+        <p key={`text-${key++}`} className="chat-bubble-text">
+          {text}
+        </p>
+      );
+    }
+  }
+
+  return parts.length > 0 ? parts : <p className="chat-bubble-text">{content}</p>;
+}
+
 interface ChatMessageBubbleProps {
   message: ChatUIMessage;
 }
 
-/**
- * Renders one message row — user (right-aligned, gold), assistant
- * (left-aligned, glass), or a centered system notice.
- *
- * Copy Response: every non-user message (assistant reply or system
- * notice) gets a small copy button, mirroring the calculator's own
- * copy-to-clipboard pattern (icon swap to a checkmark + a themed toast).
- * User messages don't get one — there's nothing to "copy back" from
- * something the person just typed themselves.
- */
 export function ChatMessageBubble({ message }: ChatMessageBubbleProps) {
   const { toast } = useToast();
   const [copied, setCopied] = useState(false);
@@ -103,7 +138,7 @@ export function ChatMessageBubble({ message }: ChatMessageBubbleProps) {
       )}
       <div className="chat-bubble-col">
         <div className={cn("chat-bubble", isUser ? "chat-bubble--user" : "chat-bubble--assistant")}>
-          <p className="chat-bubble-text">{message.content}</p>
+          {renderMessageContent(message.content)}
         </div>
         <div className={cn("chat-meta-row", isUser && "chat-meta-row--user")}>
           <span className={cn("chat-timestamp", isUser && "chat-timestamp--user")}>
