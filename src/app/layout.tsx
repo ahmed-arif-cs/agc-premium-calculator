@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { PWARegister } from "@/components/PWARegister";
 import { SettingsApplier } from "@/components/SettingsApplier";
 import { SessionProvider } from "@/components/auth/SessionProvider";
+import { OfflineIndicator } from "@/components/OfflineIndicator";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -106,6 +107,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${spaceGrotesk.variable} antialiased`}
       >
         <SessionProvider>
+          <OfflineIndicator />
           <SettingsApplier />
           {children}
           <Toaster />

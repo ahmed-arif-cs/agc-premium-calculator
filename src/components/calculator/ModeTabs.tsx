@@ -13,6 +13,7 @@ const TABS: ModeTabDef[] = [
   { id: "standard", label: "Standard" },
   { id: "scientific", label: "Scientific" },
   { id: "converter", label: "Converter" },
+  { id: "programmer", label: "Programmer" },
 ];
 
 interface ModeTabsProps {

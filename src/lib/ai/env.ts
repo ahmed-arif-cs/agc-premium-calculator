@@ -91,7 +91,11 @@ export function getAIBaseUrl(): string | undefined {
  * cloud sync foundation.
  */
 export function isAIConfigured(): boolean {
-  return getAIProvider() !== "none" && Boolean(readEnv("AI_API_KEY"));
+  const provider = getAIProvider();
+  if (provider === "openai") return isProviderConfigComplete(getOpenAIConfig());
+  if (provider === "claude" || provider === "anthropic") return isProviderConfigComplete(getClaudeConfig());
+  if (provider === "gemini") return isProviderConfigComplete(getGeminiConfig());
+  return false;
 }
 
 /**

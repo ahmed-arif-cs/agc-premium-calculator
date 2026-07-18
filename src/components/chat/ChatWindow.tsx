@@ -1,25 +1,22 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
-import { Bot, ChevronLeft, Trash2 } from "lucide-react";
+import { ChevronLeft, Trash2 } from "lucide-react";
 import { MessageList } from "./MessageList";
 import { ChatInput } from "./ChatInput";
-import type { ChatUIMessage } from "./types";
+import type { ChatUIImage, ChatUIMessage } from "./types";
 
 let idCounter = 0;
-/** Monotonic id, unique within a single page session — plenty for local-only chat state. */
 function nextId(): string {
   idCounter += 1;
   return `msg_${Date.now()}_${idCounter}`;
 }
 
-/** localStorage key for the Conversation History feature (this browser only). */
 const HISTORY_STORAGE_KEY = "agc-ai-chat-history-v1";
-/** localStorage key for this browser's stable conversation id — kept alongside the transcript so a reload continues the same server-side conversation context instead of starting a fresh one. */
 const CONVERSATION_ID_STORAGE_KEY = "agc-ai-chat-conversation-id-v1";
 
-/** A simple, dependency-free unique id for this browser's conversation. */
 function generateConversationId(): string {
   if (typeof crypto !== "undefined" && "randomUUID" in crypto) return crypto.randomUUID();
   return `conv_${Date.now().toString(36)}_${Math.random().toString(36).slice(2)}`;
@@ -36,33 +33,12 @@ function isStoredMessage(value: unknown): value is ChatUIMessage {
   );
 }
 
-/**
- * The Chat Window — top-level container. Composes the Message List and
- * Chat Input, and owns the conversation's local state.
- *
- * Connected to the server-only AI Service Layer via `POST /api/ai/chat`
- * (`src/app/api/ai/chat/route.ts`) — the only client-server seam this
- * component uses. No API key, provider name, or `src/lib/ai/*` import
- * lives in this file or anywhere else in `src/components/chat/`; the
- * route resolves whichever provider `AI_PROVIDER` selects server-side.
- * If no provider is configured, the route replies with a typed
- * `not_configured` error, shown here as a clearly-labeled system notice
- * rather than a fabricated assistant reply — the calculator itself never
- * depends on this working.
- *
- * Conversation History: the transcript (and this browser's stable
- * conversation id, so a reload continues the same server-side context)
- * is persisted to `localStorage` (client-only). Clear Chat wipes both
- * the in-memory state and the saved history/id.
- */
 export function ChatWindow() {
   const [messages, setMessages] = useState<ChatUIMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [historyLoaded, setHistoryLoaded] = useState(false);
   const conversationIdRef = useRef<string>("");
 
-  // Restore any previously saved conversation (and its stable id) from
-  // this browser on mount.
   useEffect(() => {
     if (typeof window === "undefined") return;
     try {
@@ -71,7 +47,6 @@ export function ChatWindow() {
         const parsed: unknown = JSON.parse(raw);
         if (Array.isArray(parsed)) {
           const restored = parsed.filter(isStoredMessage);
-          // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time restore from localStorage, deliberately deferred until after mount to avoid an SSR/client hydration mismatch (localStorage doesn't exist on the server).
           if (restored.length > 0) setMessages(restored);
         }
       }
@@ -90,8 +65,6 @@ export function ChatWindow() {
     }
   }, []);
 
-  // Persist the conversation on every change, once the restore above has
-  // run (so we never clobber saved history with the empty initial state).
   useEffect(() => {
     if (!historyLoaded || typeof window === "undefined") return;
     try {
@@ -101,12 +74,15 @@ export function ChatWindow() {
         window.localStorage.removeItem(HISTORY_STORAGE_KEY);
       }
     } catch {
-      // Storage may be unavailable (private browsing, quota) — fail silently.
+      // Storage may be unavailable or full — fail silently.
     }
   }, [messages, historyLoaded]);
 
-  const handleSend = useCallback((text: string) => {
-    setMessages((prev) => [...prev, { id: nextId(), role: "user", content: text, createdAt: Date.now() }]);
+  const handleSend = useCallback((text: string, images?: ChatUIImage[]) => {
+    setMessages((prev) => [
+      ...prev,
+      { id: nextId(), role: "user", content: text, createdAt: Date.now(), images },
+    ]);
     setIsLoading(true);
 
     const conversationId = conversationIdRef.current || generateConversationId();
@@ -117,7 +93,11 @@ export function ChatWindow() {
         const response = await fetch("/api/ai/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ conversationId, message: text }),
+          body: JSON.stringify({
+            conversationId,
+            message: text,
+            images: images?.map((img) => img.previewUrl),
+          }),
         });
 
         const data: unknown = await response.json().catch(() => null);
@@ -195,8 +175,8 @@ export function ChatWindow() {
       <div className="calc-glass chat-card">
         <div className="chat-header">
           <div className="chat-header-title">
-            <div className="chat-header-icon" aria-hidden>
-              <Bot className="h-4 w-4" />
+            <div className="chat-header-icon chat-header-icon--logo" aria-hidden>
+              <Image src="/agc-mark.png" alt="" width={32} height={32} className="h-full w-full object-cover" />
             </div>
             <div className="leading-tight">
               <p className="t-text chat-header-name">AI Assistant</p>

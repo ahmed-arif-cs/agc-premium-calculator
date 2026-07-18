@@ -14,7 +14,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { useMemory } from "@/hooks/useMemory";
 
-export type CalculatorMode = "standard" | "scientific" | "converter";
+export type CalculatorMode = "standard" | "scientific" | "converter" | "programmer";
 
 export interface EvaluationRecord {
   id: string;

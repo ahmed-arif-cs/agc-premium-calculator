@@ -3,7 +3,13 @@
 import { useCallback, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { History as HistoryIcon, Info, MessageSquareText, Redo2, Settings, Sparkles, Star, Undo2, UserRound, Wand2 } from "lucide-react";
+import { History as HistoryIcon, Info, Menu, MessageSquareText, Redo2, Settings, Sparkles, Star, Undo2, UserRound, Wand2 } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useCalculator } from "@/hooks/useCalculator";
 import { useHistory } from "@/hooks/useHistory";
 import { useHistorySyncStatus } from "@/hooks/useHistorySync";
@@ -40,6 +46,10 @@ const Converter = dynamic(
 );
 const SmartBar = dynamic(
   () => import("./SmartBar").then((m) => m.SmartBar),
+  { ssr: false },
+);
+const ProgrammerCalculator = dynamic(
+  () => import("./ProgrammerCalculator").then((m) => m.ProgrammerCalculator),
   { ssr: false },
 );
 const HistoryPanel = dynamic(
@@ -109,6 +119,7 @@ export function Calculator() {
   );
 
   const isConverter = calc.mode === "converter";
+  const isProgrammer = calc.mode === "programmer";
 
   return (
     <>
@@ -195,61 +206,70 @@ export function Calculator() {
               <UserRound className="h-4 w-4" />
               {auth.isAuthenticated ? <span className="calc-util-dot" aria-hidden /> : null}
             </button>
-            <button
-              type="button"
-              className="calc-util-btn"
-              onClick={() => {
-                clickSound();
-                setSettingsOpen(true);
-              }}
-              aria-label="Open settings"
-              title="Settings & themes"
-            >
-              <Settings className="h-4 w-4" />
-            </button>
-            <button
-              type="button"
-              className="calc-util-btn"
-              onClick={() => {
-                clickSound();
-                setHistoryOpen(true);
-              }}
-              aria-label="Open history"
-              title="History"
-            >
-              <HistoryIcon className="h-4 w-4" />
-            </button>
-            <button
-              type="button"
-              className="calc-util-btn"
-              onClick={() => {
-                clickSound();
-                setFavoritesOpen(true);
-              }}
-              aria-label="Open favorites"
-              title="Favorites"
-            >
-              <Star className="h-4 w-4" />
-            </button>
-            <button
-              type="button"
-              className="calc-util-btn"
-              onClick={() => {
-                clickSound();
-                setAboutOpen(true);
-              }}
-              aria-label="About AGC Premium Calculator"
-              title="About"
-            >
-              <Info className="h-4 w-4" />
-            </button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  type="button"
+                  className="calc-util-btn calc-hamburger-btn"
+                  aria-label="Open menu"
+                  title="Menu"
+                  onClick={clickSound}
+                >
+                  <Menu className="h-4 w-4" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="calc-hamburger-menu">
+                <DropdownMenuItem
+                  className="calc-hamburger-item"
+                  onSelect={() => {
+                    clickSound();
+                    setHistoryOpen(true);
+                  }}
+                >
+                  <HistoryIcon className="h-4 w-4" />
+                  History
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  className="calc-hamburger-item"
+                  onSelect={() => {
+                    clickSound();
+                    setFavoritesOpen(true);
+                  }}
+                >
+                  <Star className="h-4 w-4" />
+                  Favorites
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  className="calc-hamburger-item"
+                  onSelect={() => {
+                    clickSound();
+                    setSettingsOpen(true);
+                  }}
+                >
+                  <Settings className="h-4 w-4" />
+                  Settings
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  className="calc-hamburger-item"
+                  onSelect={() => {
+                    clickSound();
+                    setAboutOpen(true);
+                  }}
+                >
+                  <Info className="h-4 w-4" />
+                  About
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
 
-        {!isConverter && smartOpen ? <SmartBar calc={calc} /> : null}
+        {!isConverter && !isProgrammer && smartOpen ? <SmartBar calc={calc} /> : null}
 
         {isConverter ? (
           <Converter />
+        ) : isProgrammer ? (
+          <ProgrammerCalculator />
         ) : (
           <>
             <Display calc={calc} />

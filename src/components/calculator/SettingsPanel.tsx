@@ -53,6 +53,16 @@ const THEMES: { id: ThemeId; label: string; bg: string; accent: string }[] = [
   { id: "light", label: "Light", bg: "#f3f4f8", accent: "#b8932b" },
   { id: "navy-emerald", label: "Navy / Emerald", bg: "#07151a", accent: "#10b981" },
   { id: "charcoal-rosegold", label: "Charcoal / Rose Gold", bg: "#1a1518", accent: "#d6a08e" },
+  { id: "ocean-sapphire", label: "Ocean / Sapphire", bg: "#071019", accent: "#3b82f6" },
+  { id: "royal-amethyst", label: "Royal / Amethyst", bg: "#140b1c", accent: "#a855f7" },
+  { id: "crimson-ember", label: "Crimson / Ember", bg: "#170a0a", accent: "#ef4444" },
+  { id: "forest-jade", label: "Forest / Jade", bg: "#0c150e", accent: "#22c55e" },
+  { id: "sunset-copper", label: "Sunset / Copper", bg: "#170f08", accent: "#d97706" },
+  { id: "midnight-silver", label: "Midnight / Silver", bg: "#0e1013", accent: "#94a3b8" },
+  { id: "rose-bloom", label: "Rose / Bloom", bg: "#170a12", accent: "#ec4899" },
+  { id: "golden-bronze", label: "Golden / Bronze", bg: "#160f09", accent: "#c08552" },
+  { id: "arctic-frost", label: "Arctic / Frost", bg: "#071620", accent: "#38bdf8" },
+  { id: "volcanic-obsidian", label: "Volcanic / Obsidian", bg: "#140b08", accent: "#f97316" },
 ];
 
 const FONT_SIZES: { id: FontSize; label: string }[] = [

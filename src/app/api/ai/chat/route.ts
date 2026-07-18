@@ -1,35 +1,46 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getAIService, isAIConfigured, AIProviderError } from "@/lib/ai";
+import type { ChatImageAttachment } from "@/lib/ai";
 import { checkRateLimit, getClientIp, rateLimitedResponse } from "@/lib/rateLimit";
 
-// Task 33 (production security audit): this route is reachable without
-// authentication (Guest Mode included) and, once configured, calls a
-// paid external AI vendor per request — cap abuse from a single client
-// at a generous but finite rate rather than leaving it unbounded.
 const RATE_LIMIT = 20;
 const RATE_LIMIT_WINDOW_MS = 60_000;
 
-/**
- * POST /api/ai/chat
- *
- * The one connection point between the AI Chat UI (`src/components/chat/`)
- * and the server-only AI Service Layer (`src/lib/ai/`) — this is the
- * seam Task 25's `aiService.ts` doc comment always pointed at ("a
- * future server action, API route, or background job").
- *
- * Request body: `{ conversationId: string; message: string }`
- * Response body (success, 200): `{ reply: string; provider: string; conversationId: string }`
- * Response body (failure, 4xx/5xx): `{ error: string; code: AIErrorCode }`
- *
- * Provider switching is entirely a matter of environment configuration —
- * this route never names a vendor. It always calls the single shared
- * `getAIService()`, which resolves whichever provider `AI_PROVIDER`
- * selects (`"openai"` | `"claude"` | `"gemini"`, or `"none"`) via
- * `providers/index.ts`'s registry. No API key is read, logged, or
- * returned by this route — every provider reads its own key straight
- * from `process.env` inside `src/lib/ai/`, server-side only.
- */
+const MAX_IMAGES_PER_MESSAGE = 4;
+const MAX_IMAGE_BASE64_LENGTH = 6_000_000;
+const ALLOWED_IMAGE_MIME_TYPES = new Set(["image/jpeg", "image/png", "image/webp", "image/heic", "image/heif"]);
+const IMAGE_DATA_URL_PATTERN = /^data:(image\/[a-zA-Z0-9.+-]+);base64,([A-Za-z0-9+/=]+)$/;
+
+function parseImages(rawImages: unknown): { images?: ChatImageAttachment[]; error?: string } {
+  if (rawImages === undefined || rawImages === null) return { images: undefined };
+  if (!Array.isArray(rawImages)) return { error: "images must be an array of data URLs." };
+  if (rawImages.length > MAX_IMAGES_PER_MESSAGE) {
+    return { error: `You can attach at most ${MAX_IMAGES_PER_MESSAGE} images per message.` };
+  }
+
+  const images: ChatImageAttachment[] = [];
+  for (const entry of rawImages) {
+    if (typeof entry !== "string") {
+      return { error: "Each image must be a data URL string." };
+    }
+    if (entry.length > MAX_IMAGE_BASE64_LENGTH) {
+      return { error: "One of the attached images is too large. Please attach a smaller photo." };
+    }
+    const match = IMAGE_DATA_URL_PATTERN.exec(entry);
+    if (!match) {
+      return { error: "One of the attached images is not a valid image data URL." };
+    }
+    const [, mimeType, data] = match;
+    if (!ALLOWED_IMAGE_MIME_TYPES.has(mimeType.toLowerCase())) {
+      return { error: `Unsupported image type: ${mimeType}. Use JPEG, PNG, WebP, or HEIC.` };
+    }
+    images.push({ mimeType: mimeType.toLowerCase(), data });
+  }
+
+  return { images: images.length > 0 ? images : undefined };
+}
+
 export async function POST(request: NextRequest) {
   const rateLimit = checkRateLimit(
     `ai-chat:${getClientIp(request)}`,
@@ -50,9 +61,10 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const { conversationId, message } = (body ?? {}) as {
+  const { conversationId, message, images: rawImages } = (body ?? {}) as {
     conversationId?: unknown;
     message?: unknown;
+    images?: unknown;
   };
 
   if (typeof conversationId !== "string" || conversationId.trim().length === 0) {
@@ -61,7 +73,7 @@ export async function POST(request: NextRequest) {
       { status: 400 }
     );
   }
-  if (typeof message !== "string" || message.trim().length === 0) {
+  if (typeof message !== "string") {
     return NextResponse.json(
       { error: "message is required.", code: "invalid_request" },
       { status: 400 }
@@ -70,6 +82,17 @@ export async function POST(request: NextRequest) {
   if (message.length > 8000) {
     return NextResponse.json(
       { error: "message is too long.", code: "invalid_request" },
+      { status: 400 }
+    );
+  }
+
+  const { images, error: imageError } = parseImages(rawImages);
+  if (imageError) {
+    return NextResponse.json({ error: imageError, code: "invalid_request" }, { status: 400 });
+  }
+  if (message.trim().length === 0 && (!images || images.length === 0)) {
+    return NextResponse.json(
+      { error: "message is required.", code: "invalid_request" },
       { status: 400 }
     );
   }
@@ -93,6 +116,7 @@ export async function POST(request: NextRequest) {
       input: message,
       templateId: "general-assistant",
       maxHistoryMessages: 20,
+      images,
     });
 
     return NextResponse.json({
@@ -103,9 +127,6 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     if (error instanceof AIProviderError) {
       const status = statusForErrorCode(error.code);
-      // Deliberately never include `error.cause` (which may hold a raw
-      // provider response body) in the JSON sent to the browser — only
-      // this route's own server-side logs see that detail.
       console.error(`[api/ai/chat] ${error.code}: ${error.message}`, error.cause);
       return NextResponse.json({ error: error.message, code: error.code }, { status });
     }

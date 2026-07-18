@@ -14,7 +14,7 @@
  * exactly, so a real generation run should produce an equivalent shape.
  */
 
-export type ThemeId = "navy-gold" | "light" | "navy-emerald" | "charcoal-rosegold";
+export type ThemeId = "navy-gold" | "light" | "navy-emerald" | "charcoal-rosegold" | "ocean-sapphire" | "royal-amethyst" | "crimson-ember" | "forest-jade" | "sunset-copper" | "midnight-silver" | "rose-bloom" | "golden-bronze" | "arctic-frost" | "volcanic-obsidian";
 export type FontSize = "sm" | "md" | "lg";
 
 export interface Database {

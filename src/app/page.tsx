@@ -1,11 +1,13 @@
 import Image from "next/image";
 import { Calculator } from "@/components/calculator/Calculator";
 import { SplashScreen } from "@/components/calculator/SplashScreen";
+import { WelcomeGate } from "@/components/calculator/WelcomeGate";
 
 export default function Home() {
   return (
     <div className="relative flex min-h-screen flex-col">
       <SplashScreen />
+      <WelcomeGate />
       <div className="calc-bg-glow" aria-hidden />
 
       <main className="flex flex-1 flex-col items-center justify-center px-4 py-8">

@@ -5,13 +5,16 @@ import type { ChatMessage, GenerateRequest, GenerateResult } from "../types";
 import { AIProviderError } from "../types";
 import { getGeminiConfig, isProviderConfigComplete, type ProviderEnvConfig } from "../env";
 
-/** The wire shape Gemini's `generateContent` API expects for one turn. */
-export interface GeminiWireContent {
-  role: "user" | "model";
-  parts: { text: string }[];
+export interface GeminiWirePart {
+  text?: string;
+  inlineData?: { mimeType: string; data: string };
 }
 
-/** Gemini takes its system prompt as its own top-level field (`systemInstruction`), not as a turn in `contents`. */
+export interface GeminiWireContent {
+  role: "user" | "model";
+  parts: GeminiWirePart[];
+}
+
 export interface GeminiWireRequest {
   systemInstruction?: { parts: { text: string }[] };
   contents: GeminiWireContent[];
@@ -19,22 +22,6 @@ export interface GeminiWireRequest {
 
 const DEFAULT_BASE_URL = "https://generativelanguage.googleapis.com/v1beta";
 
-/**
- * Modular Gemini (Google) provider (Task 26, connected in Task 29's
- * "Connect AI Chat" pass).
- *
- * Reads its configuration from the environment
- * (`GEMINI_API_KEY`/`GEMINI_MODEL`/`GEMINI_BASE_URL`, via `env.ts`'s
- * `getGeminiConfig()` — no key is hardcoded anywhere in this file) and
- * sends a real request to Gemini's `generateContent` endpoint via
- * `fetch`, pulling any `"system"`-role message(s) into a separate
- * top-level `systemInstruction`, renaming `"assistant"` to Gemini's own
- * `"model"` role, and wrapping each message's text in Gemini's `parts`
- * array. Every failure mode (missing config, HTTP error, network error,
- * malformed response) is normalized into a typed `AIProviderError` so
- * `AIService` and the `/api/ai/chat` route can react uniformly
- * regardless of which vendor is configured.
- */
 export class GeminiProvider implements AIProvider {
   readonly name = "gemini";
 
@@ -44,27 +31,29 @@ export class GeminiProvider implements AIProvider {
     this.config = config;
   }
 
-  /** True once an API key and model are both present. Never throws. */
   isConfigured(): boolean {
     return isProviderConfigComplete(this.config);
   }
 
-  /**
-   * Maps this project's provider-agnostic `ChatMessage[]` onto Gemini's
-   * own wire shape: every `"system"`-role message is joined into one
-   * top-level `systemInstruction`, and every remaining message becomes a
-   * `contents` entry with `"assistant"` renamed to Gemini's `"model"`
-   * role. Pure and network-free — reused by `generate()` below once a
-   * future task actually sends this payload somewhere.
-   */
   toWireRequest(messages: ChatMessage[]): GeminiWireRequest {
     const systemParts = messages.filter((m) => m.role === "system").map((m) => m.content);
     const contents: GeminiWireContent[] = messages
       .filter((m) => m.role !== "system")
-      .map((message) => ({
-        role: message.role === "assistant" ? "model" : "user",
-        parts: [{ text: message.content }],
-      }));
+      .map((message) => {
+        const parts: GeminiWirePart[] = [];
+        if (message.content.trim().length > 0) {
+          parts.push({ text: message.content });
+        }
+        for (const image of message.images ?? []) {
+          parts.push({ inlineData: { mimeType: image.mimeType, data: image.data } });
+        }
+        if (parts.length === 0) parts.push({ text: "" });
+
+        return {
+          role: message.role === "assistant" ? "model" : "user",
+          parts,
+        };
+      });
 
     return {
       systemInstruction:

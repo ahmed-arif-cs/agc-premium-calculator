@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useSyncExternalStore } from "react";
 
-export type ThemeId = "navy-gold" | "light" | "navy-emerald" | "charcoal-rosegold";
+export type ThemeId = "navy-gold" | "light" | "navy-emerald" | "charcoal-rosegold" | "ocean-sapphire" | "royal-amethyst" | "crimson-ember" | "forest-jade" | "sunset-copper" | "midnight-silver" | "rose-bloom" | "golden-bronze" | "arctic-frost" | "volcanic-obsidian";
 export type FontSize = "sm" | "md" | "lg";
 
 export interface Settings {
@@ -50,7 +50,17 @@ function readFromStorage(): Settings {
         p.theme === "light" ||
         p.theme === "navy-emerald" ||
         p.theme === "charcoal-rosegold" ||
-        p.theme === "navy-gold"
+        p.theme === "navy-gold" ||
+        p.theme === "ocean-sapphire" ||
+        p.theme === "royal-amethyst" ||
+        p.theme === "crimson-ember" ||
+        p.theme === "forest-jade" ||
+        p.theme === "sunset-copper" ||
+        p.theme === "midnight-silver" ||
+        p.theme === "rose-bloom" ||
+        p.theme === "golden-bronze" ||
+        p.theme === "arctic-frost" ||
+        p.theme === "volcanic-obsidian"
           ? p.theme
           : DEFAULTS.theme,
       fontSize:

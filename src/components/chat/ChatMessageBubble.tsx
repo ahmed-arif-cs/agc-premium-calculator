@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { Bot, Check, Copy, UserRound } from "lucide-react";
+import Image from "next/image";
+import { Check, Copy, UserRound } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import type { ChatUIMessage } from "./types";
@@ -14,12 +15,6 @@ function formatTime(ts: number): string {
   }
 }
 
-/**
- * Splits message content on markdown image syntax (![alt](/ahmed/x.jpg))
- * and renders each text chunk as a paragraph and each image as an <img>.
- * Only local /ahmed/ paths render as images — anything else stays plain
- * text, so this never becomes a generic "render arbitrary URLs" feature.
- */
 function renderMessageContent(content: string) {
   const imageRegex = /!\[([^\]]*)\]\((\/ahmed\/[^\s)]+)\)/g;
   const parts: ReactNode[] = [];
@@ -56,7 +51,7 @@ function renderMessageContent(content: string) {
     }
   }
 
-  return parts.length > 0 ? parts : <p className="chat-bubble-text">{content}</p>;
+  return parts;
 }
 
 interface ChatMessageBubbleProps {
@@ -128,17 +123,33 @@ export function ChatMessageBubble({ message }: ChatMessageBubbleProps) {
   }
 
   const isUser = message.role === "user";
+  const textParts = renderMessageContent(message.content);
+  const hasAttachedImages = isUser && (message.images?.length ?? 0) > 0;
 
   return (
     <div className={cn("chat-row", isUser ? "chat-row--user" : "chat-row--assistant")}>
       {!isUser && (
-        <div className="chat-avatar chat-avatar--assistant" aria-hidden>
-          <Bot className="h-4 w-4" />
+        <div className="chat-avatar chat-avatar--assistant chat-avatar--logo" aria-hidden>
+          <Image src="/agc-mark.png" alt="" width={28} height={28} className="h-full w-full object-cover" />
         </div>
       )}
       <div className="chat-bubble-col">
         <div className={cn("chat-bubble", isUser ? "chat-bubble--user" : "chat-bubble--assistant")}>
-          {renderMessageContent(message.content)}
+          {hasAttachedImages && (
+            <div className="chat-bubble-attachments">
+              {message.images!.map((image, index) => (
+                <img
+                  key={index}
+                  src={image.previewUrl}
+                  alt="Attached photo"
+                  className="chat-bubble-image chat-bubble-image--attachment"
+                />
+              ))}
+            </div>
+          )}
+          {textParts.length > 0
+            ? textParts
+            : !hasAttachedImages && <p className="chat-bubble-text">{message.content}</p>}
         </div>
         <div className={cn("chat-meta-row", isUser && "chat-meta-row--user")}>
           <span className={cn("chat-timestamp", isUser && "chat-timestamp--user")}>
