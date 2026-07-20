@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState, type UIEvent } from "react";
-import { ArrowDown, Sparkles } from "lucide-react";
+import { useEffect, useRef, useState, type CSSProperties, type UIEvent } from "react";
+import { ArrowDown } from "lucide-react";
+import { AGCAssistantMark } from "./AGCAssistantMark";
 import { ChatMessageBubble } from "./ChatMessageBubble";
 import { LoadingIndicator } from "./LoadingIndicator";
 import type { ChatUIMessage } from "./types";
@@ -9,22 +10,21 @@ import type { ChatUIMessage } from "./types";
 interface MessageListProps {
   messages: ChatUIMessage[];
   isLoading: boolean;
+  onEdit?: (id: string, newText: string) => void;
+  /** Chat theme (Task 31) — inline style overrides from useChatTheme(). */
+  userBubbleStyle?: CSSProperties;
+  aiBubbleStyle?: CSSProperties;
 }
 
-/** How close to the bottom (px) counts as "still at the bottom" for auto-scroll purposes. */
 const STICK_THRESHOLD_PX = 64;
 
-/**
- * The Message List — scrollable transcript with an empty state before the
- * first message.
- *
- * Auto Scroll: follows the newest message/typing indicator automatically,
- * but only while the person is already at (or near) the bottom — if
- * they've scrolled up to reread earlier messages, new messages no longer
- * yank the view down. A small "New messages" pill appears instead so they
- * can jump back down on their own terms.
- */
-export function MessageList({ messages, isLoading }: MessageListProps) {
+export function MessageList({
+  messages,
+  isLoading,
+  onEdit,
+  userBubbleStyle,
+  aiBubbleStyle,
+}: MessageListProps) {
   const endRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [stickToBottom, setStickToBottom] = useState(true);
@@ -60,7 +60,7 @@ export function MessageList({ messages, isLoading }: MessageListProps) {
         {isEmpty ? (
           <div className="chat-empty">
             <div className="chat-empty-icon" aria-hidden>
-              <Sparkles className="h-5 w-5" />
+              <AGCAssistantMark className="h-8 w-8" />
             </div>
             <p className="chat-empty-title">Start a conversation</p>
             <p className="chat-empty-sub">
@@ -70,7 +70,13 @@ export function MessageList({ messages, isLoading }: MessageListProps) {
         ) : (
           <div className="chat-messages-inner">
             {messages.map((message) => (
-              <ChatMessageBubble key={message.id} message={message} />
+              <ChatMessageBubble
+                key={message.id}
+                message={message}
+                onEdit={onEdit}
+                userBubbleStyle={userBubbleStyle}
+                aiBubbleStyle={aiBubbleStyle}
+              />
             ))}
             {isLoading && <LoadingIndicator />}
           </div>

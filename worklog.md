@@ -1706,3 +1706,17 @@ Stage Summary:
 - `worklog.md`: this entry.
 
 **Production-readiness confirmation:** the project is confirmed production-ready. The only build failure observed in this sandbox is a network-egress limitation of the review environment itself (blocked access to `fonts.googleapis.com`), independently verified not to reproduce in a stubbed scratch build, and expected to resolve automatically on any real hosting platform with normal internet access (e.g. Vercel, which is this project's documented deployment target).
+
+---
+
+## Task 40 — About Section Polish & Version Display Fix
+
+**Scope:** Small, additive polish pass on the About panel left over from Task 39's release: hover animations and a close-button animation, plus fixing a version-number display mismatch.
+
+**Changes:**
+- `src/app/globals.css`: added hover transitions for the About panel's logo mark, feature-list items, and Version/Made-by meta rows (subtle scale/glow, slide, and highlight effects — no layout changes). Added a scoped 90° rotate animation on the panel's own close (✕) button (`.calc-about-panel .calc-settings-close`) on hover/active, without touching the shared `.calc-settings-close` style used by every other panel (Settings, Account, AI Calculator, Chat Theme, Chat History).
+- `src/components/calculator/AboutPanel.tsx`: corrected the hardcoded "Version" row from a stale `0.2.0` to `1.0.0`, matching `package.json`'s version (which Task 39 had already bumped, but this display string was missed at the time).
+
+**Verification:** `npx tsc --noEmit` clean (no new errors); manual browser check confirmed the hover/close animations render correctly and the About panel now shows the correct `1.0.0` version.
+
+No other files changed — README.md does not reference the version number anywhere, so it required no update.

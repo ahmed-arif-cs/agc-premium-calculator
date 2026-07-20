@@ -4,6 +4,14 @@ All notable changes to this project are documented in this file. For the full, d
 
 The format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased]
+
+### Fixed
+- About panel: corrected a stale `0.2.0` version display to `1.0.0`, matching `package.json` (missed during the 1.0.0 release in the prior task).
+
+### Added
+- About panel: hover animations on the logo mark, feature list, and detail rows; a scoped close-button rotate animation.
+
 ## [1.0.0] — Final Production Readiness Review
 
 ### Added

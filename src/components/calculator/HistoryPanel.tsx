@@ -14,6 +14,7 @@ import {
   FileType,
   History as HistoryIcon,
   Loader2,
+  Search,
   Sheet,
   Star,
   Trash2,
@@ -154,6 +155,7 @@ export function HistoryPanel({
   const { toast } = useToast();
   useEscapeToClose(open, onClose);
   const [confirmClear, setConfirmClear] = useState<boolean>(false);
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const [exportOpen, setExportOpen] = useState<boolean>(false);
   const [importError, setImportError] = useState<string | null>(null);
   const [exportFlash, setExportFlash] = useState<string | null>(null);
@@ -238,6 +240,16 @@ export function HistoryPanel({
       );
     }
   };
+  const filteredItems = searchQuery.trim()
+    ? items.filter((item) => {
+        const q = searchQuery.trim().toLowerCase();
+        return (
+          item.expression.toLowerCase().includes(q) ||
+          item.result.toLowerCase().includes(q) ||
+          item.label.toLowerCase().includes(q)
+        );
+      })
+    : items;
 
   const handleNoteKey = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
@@ -278,7 +290,30 @@ export function HistoryPanel({
           >
             <X className="h-4 w-4" />
           </button>
-        </header>
+          </header>
+
+        {items.length > 0 && (
+          <div className="calc-history-search">
+            <Search className="h-3.5 w-3.5" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search history…"
+              aria-label="Search calculation history"
+            />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => setSearchQuery("")}
+                aria-label="Clear search"
+                className="calc-history-search-clear"
+              >
+                <X className="h-3.5 w-3.5" />
+              </button>
+            )}
+          </div>
+        )}
 
         <div className="calc-history-actions">
           <button
@@ -434,9 +469,9 @@ export function HistoryPanel({
           </div>
         )}
 
-        {items.length > 0 ? (
+        {filteredItems.length > 0 ? (
           <ul className="calc-history-list">
-            {items.map((item) => (
+            {filteredItems.map((item) => (
                 <li key={item.id} className="calc-history-item">
                   {isFavorite && onToggleFavorite && (
                     <button
@@ -499,9 +534,13 @@ export function HistoryPanel({
         ) : (
           <div className="calc-history-empty">
             <HistoryIcon className="t-muted mx-auto mb-3 h-8 w-8" />
-            <p className="t-secondary text-sm">No calculations yet.</p>
+            <p className="t-secondary text-sm">
+              {searchQuery ? "No matching calculations." : "No calculations yet."}
+            </p>
             <p className="t-muted mt-1 text-xs">
-              Results you compute will appear here for quick reuse.
+              {searchQuery
+                ? "Try a different search term."
+                : "Results you compute will appear here for quick reuse."}
             </p>
           </div>
         )}

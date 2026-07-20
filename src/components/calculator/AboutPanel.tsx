@@ -79,7 +79,7 @@ export function AboutPanel({ open, onClose }: AboutPanelProps) {
             <div className="calc-about-meta">
               <div className="calc-about-meta-row">
                 <span>Version</span>
-                <span>0.2.0</span>
+                <span>1.0.0</span>
               </div>
               <div className="calc-about-meta-row">
                 <span>Made by</span>

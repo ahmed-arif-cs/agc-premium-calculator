@@ -86,6 +86,7 @@ export function useVoiceInput(onFinal?: (text: string) => void): UseVoiceInputRe
     };
     recog.onerror = (event) => {
       const reason = event?.error;
+       console.error("Voice input error (raw):", event.error);
       setError(
         (reason && ERROR_MESSAGES[reason]) ?? "Voice input failed. Please try again.",
       );

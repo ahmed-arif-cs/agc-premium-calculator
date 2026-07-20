@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { History as HistoryIcon, Info, Menu, MessageSquareText, Redo2, Settings, Sparkles, Star, Undo2, UserRound, Wand2 } from "lucide-react";
+import { Bot, Calculator as CalculatorIcon, Download, History as HistoryIcon, Info, Menu, Mic2, Redo2, Settings, Star, Undo2, UserRound } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,18 +24,9 @@ import { Keypad } from "./Keypad";
 import { MemoryBar } from "./MemoryBar";
 import { ModeTabs } from "./ModeTabs";
 import { InstallBanner } from "./InstallBanner";
+import { IOSInstallSteps } from "./IOSInstallSteps";
+import { useInstallPrompt } from "@/hooks/useInstallPrompt";
 
-// Bundle-size / lazy-loading optimization: everything below is either a
-// slide-out panel that starts closed (History, Favorites, Settings, About,
-// Account, AI Calculator) or a keypad/bar only shown in a non-default mode
-// (Scientific keypad, Smart input bar, Converter). None of these are needed
-// for the very first paint of the default Standard-mode calculator, so they
-// are code-split into their own chunks via `next/dynamic` and fetched only
-// when the user actually opens/switches to them, instead of being part of
-// the initial JS bundle. `ssr: false` is safe here — every one of these is
-// already a "use client" component that renders nothing (or a fixed/
-// absolute-positioned overlay) when closed, so there is no layout to
-// reserve and no hydration-mismatch risk.
 const ScientificKeypad = dynamic(
   () => import("./ScientificKeypad").then((m) => m.ScientificKeypad),
   { ssr: false },
@@ -80,11 +71,6 @@ const AICalculatorPanel = dynamic(
 export function Calculator() {
   const calc = useCalculator();
   const history = useHistory();
-  // Cloud sync itself (restore-on-login + push-on-change) is mounted once,
-  // site-wide, by `SettingsApplier.tsx` (Task 22) rather than here — this
-  // is only a read-only subscription to that hook's live status, so
-  // Guest Mode and this component's own render behavior are unaffected;
-  // see `SettingsApplier.tsx`'s doc comment for the full rationale.
   const historySyncStatus = useHistorySyncStatus();
   const memorySyncStatus = useMemorySyncStatus();
   const favorites = useFavorites();
@@ -100,8 +86,9 @@ export function Calculator() {
   const [accountOpen, setAccountOpen] = useState<boolean>(false);
   const [smartOpen, setSmartOpen] = useState<boolean>(false);
   const [aiCalcOpen, setAiCalcOpen] = useState<boolean>(false);
+  const [iosStepsOpen, setIosStepsOpen] = useState<boolean>(false);
+  const install = useInstallPrompt();
 
-  // When a calculation is committed, record it in history (once per evaluation).
   useEffect(() => {
     if (calc.lastEvaluation) {
       addHistory(calc.lastEvaluation.expression, calc.lastEvaluation.result);
@@ -145,16 +132,16 @@ export function Calculator() {
               aria-pressed={smartOpen}
               title="Smart input (natural language / equations / voice)"
             >
-              <Sparkles className="h-4 w-4" />
+              <Mic2 className="h-4 w-4" />
             </button>
-            <Link
+           <Link
               href="/chat"
               className="calc-util-btn"
               onClick={clickSound}
               aria-label="AI Chat (preview)"
               title="AI Chat (preview — not yet connected)"
             >
-              <MessageSquareText className="h-4 w-4" />
+              <Bot className="h-4 w-4" />
             </Link>
             <button
               type="button"
@@ -167,7 +154,7 @@ export function Calculator() {
               aria-pressed={aiCalcOpen}
               title="AI Calculator (natural language, formula explanations, step-by-step solutions)"
             >
-              <Wand2 className="h-4 w-4" />
+              <CalculatorIcon className="h-4 w-4" />
             </button>
             <button
               type="button"
@@ -243,11 +230,21 @@ export function Calculator() {
                   className="calc-hamburger-item"
                   onSelect={() => {
                     clickSound();
+                    setAccountOpen(true);
+                  }}
+                >
+                  <UserRound className="h-4 w-4" />
+                  {auth.isAuthenticated ? "Account" : "Sign in"}
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  className="calc-hamburger-item"
+                  onSelect={() => {
+                    clickSound();
                     setSettingsOpen(true);
                   }}
                 >
                   <Settings className="h-4 w-4" />
-                  Settings
+                  Settings / Themes
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   className="calc-hamburger-item"
@@ -259,6 +256,22 @@ export function Calculator() {
                   <Info className="h-4 w-4" />
                   About
                 </DropdownMenuItem>
+                {!install.installed ? (
+                  <DropdownMenuItem
+                    className="calc-hamburger-item"
+                    onSelect={() => {
+                      clickSound();
+                      if (install.canInstall) {
+                        install.promptInstall();
+                      } else {
+                        setIosStepsOpen(true);
+                      }
+                    }}
+                  >
+                    <Download className="h-4 w-4" />
+                    Install App
+                  </DropdownMenuItem>
+                ) : null}
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
@@ -320,6 +333,8 @@ export function Calculator() {
       <AboutPanel open={aboutOpen} onClose={() => setAboutOpen(false)} />
 
       <InstallBanner />
+
+      <IOSInstallSteps open={iosStepsOpen} onClose={() => setIosStepsOpen(false)} />
     </>
   );
 }

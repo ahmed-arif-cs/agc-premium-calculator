@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { AlertTriangle, Sparkle, Wand2, X } from "lucide-react";
+import { AlertTriangle, Mic, Sparkle, Wand2, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useEscapeToClose } from "@/hooks/useEscapeToClose";
 import { useClickSound } from "@/hooks/useSettings";
 import { useToast } from "@/hooks/use-toast";
+import { useVoiceInput } from "@/hooks/useVoiceInput";
 import type { UseCalculatorReturn } from "@/hooks/useCalculator";
 
 interface AICalculatorPanelProps {
@@ -107,6 +108,22 @@ export function AICalculatorPanel({ open, onClose, calc }: AICalculatorPanelProp
       setLoading(false);
     }
   };
+  // Voice recognition fills the field with the final transcript AND
+  // immediately asks the AI — same one-step pattern SmartBar.tsx's mic
+  // button already uses, via the same shared useVoiceInput hook.
+  const voice = useVoiceInput((finalText) => {
+    setQuery(finalText);
+    ask(finalText);
+  });
+
+  const handleMic = () => {
+    clickSound();
+    if (voice.listening) {
+      voice.stop();
+    } else {
+      voice.start();
+    }
+  };
 
   const handleInsert = () => {
     if (!data) return;
@@ -167,20 +184,46 @@ export function AICalculatorPanel({ open, onClose, calc }: AICalculatorPanelProp
               ask(query);
             }}
           >
-            <textarea
-              className="calc-aic-input"
-              placeholder={'Try "18% of a $240 dinner bill" or "square root of 225 plus 7 squared"'}
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
-                  ask(query);
+            <div className="calc-aic-input-row">
+              <textarea
+                className="calc-aic-input"
+                placeholder={
+                  voice.listening
+                    ? "Listening… speak now"
+                    : 'Try "18% of a $240 dinner bill" or "square root of 225 plus 7 squared"'
                 }
-              }}
-              rows={2}
-              aria-label="Ask the AI Calculator"
-            />
+                value={voice.listening ? voice.transcript : query}
+                onChange={(e) => setQuery(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    ask(query);
+                  }
+                }}
+                readOnly={voice.listening}
+                rows={2}
+                aria-label="Ask the AI Calculator"
+              />
+              {voice.supported ? (
+                <button
+                  type="button"
+                  className={cn("calc-mic", voice.listening && "calc-mic--listening")}
+                  onClick={handleMic}
+                  aria-label={voice.listening ? "Stop listening" : "Start voice input"}
+                  title="Voice input"
+                >
+                  <Mic className="h-4 w-4" />
+                </button>
+              ) : null}
+            </div>
+
+            {voice.error ? (
+              <div className="calc-aic-error">
+                <AlertTriangle className="h-4 w-4 shrink-0" />
+                <span>{voice.error}</span>
+              </div>
+            ) : null}
+
             <button
               type="submit"
               className="calc-aic-ask"

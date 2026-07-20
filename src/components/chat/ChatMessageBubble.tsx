@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import Image from "next/image";
-import { Check, Copy, UserRound } from "lucide-react";
+import { Check, Copy, Pencil, UserRound } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import type { ChatUIMessage } from "./types";
@@ -56,11 +56,29 @@ function renderMessageContent(content: string) {
 
 interface ChatMessageBubbleProps {
   message: ChatUIMessage;
+  /** Called with (messageId, newText) when the user saves an edit to their own message. */
+  onEdit?: (id: string, newText: string) => void;
+  /**
+   * Inline theme override from useChatTheme() (Task 31 — AI Chat theme
+   * system). `undefined` means "no override" — the existing
+   * `.chat-bubble--user` / `.chat-bubble--assistant` CSS in globals.css
+   * (which already tracks the app-wide accent theme) keeps applying
+   * exactly as before.
+   */
+  userBubbleStyle?: CSSProperties;
+  aiBubbleStyle?: CSSProperties;
 }
 
-export function ChatMessageBubble({ message }: ChatMessageBubbleProps) {
+export function ChatMessageBubble({
+  message,
+  onEdit,
+  userBubbleStyle,
+  aiBubbleStyle,
+}: ChatMessageBubbleProps) {
   const { toast } = useToast();
   const [copied, setCopied] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editValue, setEditValue] = useState(message.content);
   const copyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -84,7 +102,7 @@ export function ChatMessageBubble({ message }: ChatMessageBubbleProps) {
       .then(() => {
         setCopied(true);
         toast({
-          title: "Response copied",
+          title: "Message copied",
           description:
             message.content.length > 100 ? `${message.content.slice(0, 100)}…` : message.content,
           className: "calc-toast",
@@ -105,8 +123,8 @@ export function ChatMessageBubble({ message }: ChatMessageBubbleProps) {
     <button
       type="button"
       onClick={handleCopy}
-      aria-label="Copy response"
-      title="Copy response"
+      aria-label="Copy message"
+      title="Copy message"
       className={cn("chat-copy-btn", copied && "chat-copy-btn--copied")}
     >
       {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
@@ -126,6 +144,18 @@ export function ChatMessageBubble({ message }: ChatMessageBubbleProps) {
   const textParts = renderMessageContent(message.content);
   const hasAttachedImages = isUser && (message.images?.length ?? 0) > 0;
 
+  const startEdit = () => {
+    setEditValue(message.content);
+    setIsEditing(true);
+  };
+
+  const saveEdit = () => {
+    const trimmed = editValue.trim();
+    if (trimmed.length === 0) return;
+    onEdit?.(message.id, trimmed);
+    setIsEditing(false);
+  };
+
   return (
     <div className={cn("chat-row", isUser ? "chat-row--user" : "chat-row--assistant")}>
       {!isUser && (
@@ -134,29 +164,77 @@ export function ChatMessageBubble({ message }: ChatMessageBubbleProps) {
         </div>
       )}
       <div className="chat-bubble-col">
-        <div className={cn("chat-bubble", isUser ? "chat-bubble--user" : "chat-bubble--assistant")}>
-          {hasAttachedImages && (
-            <div className="chat-bubble-attachments">
-              {message.images!.map((image, index) => (
-                <img
-                  key={index}
-                  src={image.previewUrl}
-                  alt="Attached photo"
-                  className="chat-bubble-image chat-bubble-image--attachment"
-                />
-              ))}
+        <div
+          className={cn("chat-bubble", isUser ? "chat-bubble--user" : "chat-bubble--assistant")}
+          style={isUser ? userBubbleStyle : aiBubbleStyle}
+        >
+          {isUser && isEditing ? (
+            <div className="chat-edit-row">
+              <textarea
+                className="chat-edit-textarea"
+                value={editValue}
+                onChange={(e) => setEditValue(e.target.value)}
+                rows={2}
+                autoFocus
+                aria-label="Edit your message"
+              />
+              <div className="chat-edit-actions">
+                <button type="button" className="chat-edit-cancel" onClick={() => setIsEditing(false)}>
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  className="chat-edit-save"
+                  onClick={saveEdit}
+                  disabled={editValue.trim().length === 0}
+                >
+                  Save & resend
+                </button>
+              </div>
             </div>
+          ) : (
+            <>
+              {hasAttachedImages && (
+                <div className="chat-bubble-attachments">
+                  {message.images!.map((image, index) => (
+                    <img
+                      key={index}
+                      src={image.previewUrl}
+                      alt="Attached photo"
+                      className="chat-bubble-image chat-bubble-image--attachment"
+                    />
+                  ))}
+                </div>
+              )}
+              {textParts.length > 0
+                ? textParts
+                : !hasAttachedImages && <p className="chat-bubble-text">{message.content}</p>}
+            </>
           )}
-          {textParts.length > 0
-            ? textParts
-            : !hasAttachedImages && <p className="chat-bubble-text">{message.content}</p>}
         </div>
-        <div className={cn("chat-meta-row", isUser && "chat-meta-row--user")}>
-          <span className={cn("chat-timestamp", isUser && "chat-timestamp--user")}>
-            {formatTime(message.createdAt)}
-          </span>
-          {!isUser && copyButton}
-        </div>
+        {!isEditing && (
+          <div className={cn("chat-meta-row", isUser && "chat-meta-row--user")}>
+            <span className={cn("chat-timestamp", isUser && "chat-timestamp--user")}>
+              {formatTime(message.createdAt)}
+            </span>
+            {isUser ? (
+              <>
+                <button
+                  type="button"
+                  onClick={startEdit}
+                  aria-label="Edit message"
+                  title="Edit message"
+                  className="chat-copy-btn"
+                >
+                  <Pencil className="h-3 w-3" />
+                </button>
+                {copyButton}
+              </>
+            ) : (
+              copyButton
+            )}
+          </div>
+        )}
       </div>
       {isUser && (
         <div className="chat-avatar chat-avatar--user" aria-hidden>

@@ -152,15 +152,15 @@ async function safeReadText(response: Response): Promise<string | undefined> {
 function mapGeminiHttpError(status: number, bodyText: string | undefined): AIProviderError {
   const detail = bodyText ? bodyText.slice(0, 500) : `HTTP ${status}`;
   if (status === 401 || status === 403) {
-    return new AIProviderError("Gemini rejected the configured API key.", "authentication_failed", detail);
+    return new AIProviderError("AGC(Ahmed Group Of Companies) Premium AI rejected the request — please try again in a moment.", "authentication_failed", detail);
   }
   if (status === 429) {
-    return new AIProviderError("AGC Premium is currently handling a high volume of requests. Please try again shortly.", "rate_limited", detail);
+    return new AIProviderError("AGC(Ahmed Group Of Companies) Premium is currently handling a high volume of requests. Please try again shortly.", "rate_limited", detail);
   }
   if (status >= 400 && status < 500) {
-    return new AIProviderError("Gemini rejected the request as invalid.", "invalid_request", detail);
+    return new AIProviderError("AGC(Ahmed Group Of Companies) Premium AI couldn't process that request. Please rephrase and try again.", "invalid_request", detail);
   }
-  return new AIProviderError("Gemini's API returned an error.", "provider_error", detail);
+  return new AIProviderError("AGC(Ahmed Group Of Companies) Premium AI is temporarily unavailable. Please try again shortly.", "provider_error", detail);
 }
 
 interface GeminiGenerateContentResponse {

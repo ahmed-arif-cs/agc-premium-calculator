@@ -201,14 +201,25 @@ export async function exportHistoryXlsx(items: HistoryItem[]): Promise<void> {
   } else {
     rows.forEach((r, idx) => {
       const row = sheet.addRow([r.expression, r.result, r.label, r.timestamp]);
-      if (idx % 2 === 1) {
-        for (let c = 1; c <= 4; c += 1) {
-          row.getCell(c).fill = {
+      const isLast = idx === rows.length - 1;
+      for (let c = 1; c <= 4; c += 1) {
+        const cell = row.getCell(c);
+        if (idx % 2 === 1) {
+          cell.fill = {
             type: "pattern",
             pattern: "solid",
             fgColor: { argb: "FFF4F1E8" },
           };
         }
+        cell.border = {
+          top: { style: "thin", color: { argb: `FF${BRAND_HEX.gold}` } },
+          left: { style: "thin", color: { argb: `FF${BRAND_HEX.gold}` } },
+          right: { style: "thin", color: { argb: `FF${BRAND_HEX.gold}` } },
+          bottom: {
+            style: isLast ? "medium" : "thin",
+            color: { argb: `FF${BRAND_HEX.gold}` },
+          },
+        };
       }
       row.getCell(2).font = { bold: true };
     });
@@ -596,6 +607,12 @@ export async function exportHistoryPdf(items: HistoryItem[]): Promise<void> {
     loadImageDataUrl("/agc-mark.png"),
     loadImageDataUrl("/agc-logo.png"),
   ]);
+  console.log("PDF export debug:", {
+    markDataUrlLoaded: !!markDataUrl,
+    markDataUrlLength: markDataUrl?.length,
+    logoDataUrlLoaded: !!logoDataUrl,
+    logoDataUrlLength: logoDataUrl?.length,
+  });
 
   const doc = new jsPDF({ unit: "pt", format: "a4" });
 

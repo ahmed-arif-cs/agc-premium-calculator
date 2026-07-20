@@ -1,8 +1,9 @@
 "use client";
 
 import { useRef, useState, type ChangeEvent, type KeyboardEvent } from "react";
-import { Camera, ImagePlus, SendHorizontal, X } from "lucide-react";
+import { Camera, ImagePlus, Mic, SendHorizontal, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useVoiceInput } from "@/hooks/useVoiceInput";
 import type { ChatUIImage } from "./types";
 
 interface ChatInputProps {
@@ -49,7 +50,6 @@ function compressImageFile(file: File): Promise<ChatUIImage> {
   });
 }
 
-/** The Chat Input — an auto-growing textarea with Enter-to-send / Shift+Enter-for-newline, image attach (gallery + live camera capture), and attachment previews. Disabled while a reply is loading. */
 export function ChatInput({ onSend, disabled = false }: ChatInputProps) {
   const [value, setValue] = useState("");
   const [images, setImages] = useState<ChatUIImage[]>([]);
@@ -60,6 +60,20 @@ export function ChatInput({ onSend, disabled = false }: ChatInputProps) {
   const cameraInputRef = useRef<HTMLInputElement>(null);
 
   const atImageLimit = images.length >= MAX_IMAGES;
+
+  // Voice input — fills the textarea with the recognized speech instead of
+  // auto-sending, so the person can review/edit before hitting send.
+  const voice = useVoiceInput((finalText) => {
+    setValue((prev) => (prev ? `${prev} ${finalText}` : finalText));
+  });
+
+  const handleMic = () => {
+    if (voice.listening) {
+      voice.stop();
+    } else {
+      voice.start();
+    }
+  };
 
   const resize = () => {
     const el = textareaRef.current;
@@ -126,7 +140,7 @@ export function ChatInput({ onSend, disabled = false }: ChatInputProps) {
 
   return (
     <div className="chat-input-area">
-      {(images.length > 0 || attachError) && (
+      {(images.length > 0 || attachError || voice.error) && (
         <div className="chat-attach-row">
           {images.map((image, index) => (
             <div key={index} className="chat-attach-thumb-wrap">
@@ -144,6 +158,8 @@ export function ChatInput({ onSend, disabled = false }: ChatInputProps) {
             </div>
           ))}
           {attachError && <p className="chat-attach-error">{attachError}</p>}
+          {attachError && <p className="chat-attach-error">{attachError}</p>}
+{voice.error && <p className="chat-attach-error">{voice.error}</p>}
         </div>
       )}
 
@@ -187,6 +203,18 @@ export function ChatInput({ onSend, disabled = false }: ChatInputProps) {
         >
           <Camera className="h-4 w-4" />
         </button>
+        {voice.supported ? (
+          <button
+            type="button"
+            onClick={handleMic}
+            disabled={disabled}
+            aria-label={voice.listening ? "Stop listening" : "Start voice input"}
+            title="Voice input"
+            className={cn("calc-mic", voice.listening && "calc-mic--listening")}
+          >
+            <Mic className="h-4 w-4" />
+          </button>
+        ) : null}
 
         <textarea
           ref={textareaRef}
@@ -199,9 +227,11 @@ export function ChatInput({ onSend, disabled = false }: ChatInputProps) {
           placeholder={
             disabled
               ? "Waiting for a reply…"
-              : images.length > 0
-                ? "Add a caption (optional)…"
-                : "Message the assistant…"
+              : voice.listening
+                ? "Listening… speak now"
+                : images.length > 0
+                  ? "Add a caption (optional)…"
+                  : "Message the assistant…"
           }
           rows={1}
           maxLength={MAX_LENGTH}

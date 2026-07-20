@@ -2378,7 +2378,45 @@ body {
   color: var(--c-text-muted);
   margin: 0.2rem 0 0;
 }
+/* About panel — hover animations + cross button animation (About section update) */
+.calc-about-mark {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.calc-about-mark:hover {
+  transform: scale(1.05) rotate(-2deg);
+  box-shadow: 0 0 36px -6px rgba(var(--c-accent-rgb), 0.7);
+}
 
+.calc-about-list li {
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+.calc-about-list li:hover {
+  transform: translateX(4px);
+  color: var(--c-text);
+}
+.calc-about-list li:hover::before {
+  background: var(--c-accent);
+  box-shadow: 0 0 8px 1px rgba(var(--c-accent-rgb), 0.7);
+}
+
+.calc-about-meta-row {
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+.calc-about-meta-row:hover {
+  transform: translateX(2px);
+  border-color: rgba(var(--c-accent-rgb), 0.35);
+  background: rgba(var(--c-accent-rgb), 0.06);
+}
+
+.calc-about-panel .calc-settings-close {
+  transition: transform 0.25s ease, color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+.calc-about-panel .calc-settings-close:hover {
+  transform: rotate(90deg);
+}
+.calc-about-panel .calc-settings-close:active {
+  transform: rotate(90deg) scale(0.88);
+}
 /* Install banner */
 .calc-install {
   position: fixed;
@@ -3610,7 +3648,7 @@ body {
 }
 
 .chat-bubble--assistant {
-  color: var(--c-text);
+  color: var(--c-accent-soft);
   background: linear-gradient(160deg, var(--c-btn-1), var(--c-btn-2));
   border: 1px solid var(--c-btn-border);
   border-bottom-left-radius: 4px;
@@ -4641,4 +4679,133 @@ body {
 
 .programmer-equals {
   grid-column: span 2;
+}
+.calc-aic-input-row {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+}
+
+.calc-aic-input-row {
+  position: relative;
+}
+
+.calc-aic-input-row .calc-mic {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+.calc-ios-install-card {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 60;
+  width: min(360px, 92vw);
+  border-radius: 20px;
+  padding: 16px;
+  background: rgba(10, 14, 23, 0.98);
+  border: 1px solid rgba(var(--c-accent-rgb), 0.3);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.calc-ios-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 12px;
+  padding: 0;
+  list-style: none;
+}
+
+.calc-ios-steps li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: var(--c-text-2);
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.calc-ios-steps svg {
+  color: var(--c-accent-soft);
+  margin-top: 2px;
+}
+.chat-edit-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+.chat-edit-textarea {
+  width: 100%;
+  resize: vertical;
+  min-height: 2.4rem;
+  padding: 8px 10px;
+  font-size: 0.85rem;
+  color: var(--c-text);
+  background: rgba(var(--c-accent-rgb), 0.06);
+  border: 1px solid rgba(var(--c-accent-rgb), 0.3);
+  border-radius: 10px;
+  outline: none;
+}
+.chat-edit-textarea:focus {
+  border-color: rgba(var(--c-accent-rgb), 0.6);
+}
+.chat-edit-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.chat-edit-cancel,
+.chat-edit-save {
+  padding: 4px 12px;
+  font-size: 0.75rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1px solid rgba(var(--c-accent-rgb), 0.3);
+}
+.chat-edit-cancel {
+  background: transparent;
+  color: var(--c-text-muted);
+}
+.chat-edit-save {
+  background: rgba(var(--c-accent-rgb), 0.18);
+  color: var(--c-accent-soft);
+  font-weight: 600;
+}
+.chat-edit-save:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.calc-history-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(var(--c-accent-rgb), 0.25);
+  background: rgba(var(--c-surface-rgb), 0.05);
+  color: var(--c-text-2);
+}
+.calc-history-search input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--c-text);
+  font-size: 0.85rem;
+}
+.calc-history-search input::placeholder {
+  color: var(--c-text-muted);
+}
+.calc-history-search-clear {
+  color: var(--c-text-muted);
+  display: flex;
+  align-items: center;
+}
+.calc-history-search-clear:hover {
+  color: var(--c-accent);
 }
