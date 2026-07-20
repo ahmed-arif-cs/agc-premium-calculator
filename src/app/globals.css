@@ -820,24 +820,41 @@ body {
   border-radius: 14px;
   background: rgba(var(--c-surface-rgb), 0.04);
   border: 1px solid rgba(var(--c-surface-rgb), 0.06);
+  /* Contains the indicator's glow to the pill itself — it can never bleed
+     past the rounded outer edge of the tab group. */
+  overflow: hidden;
 }
 
+/*
+ * The indicator's left/width are set inline (in px) by ModeTabs.tsx via
+ * getBoundingClientRect measurement of the actual active button — not by
+ * CSS percentage math. This is what guarantees it always matches the
+ * real tab boundary regardless of label length, and needs no per-tab
+ * CSS rules at all (unlike the old `/ 3` and later `/ 4` hardcoded
+ * fraction approach, both of which broke as soon as tab count or tab
+ * widths changed).
+ */
 .calc-tabs-indicator {
   position: absolute;
   top: 3px;
   bottom: 3px;
-  left: 3px;
-  width: calc((100% - 6px) / 3);
-  border-radius: 11px;
-  background: linear-gradient(180deg, rgba(var(--c-accent-rgb), 0.24), rgba(var(--c-accent-rgb), 0.08));
-  border: 1px solid rgba(var(--c-accent-rgb), 0.45);
-  box-shadow: 0 0 18px -4px rgba(var(--c-accent-rgb), 0.55);
-  transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 9px;
+  background: linear-gradient(
+    180deg,
+    rgba(var(--c-accent-rgb), 0.28),
+    rgba(var(--c-accent-rgb), 0.1)
+  );
+  border: 1px solid rgba(var(--c-accent-rgb), 0.5);
+  box-shadow:
+    0 0 10px -2px rgba(var(--c-accent-rgb), 0.55),
+    0 1px 5px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition:
+    left 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+    width 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.2s ease;
+  pointer-events: none;
 }
-
-.calc-tabs[data-active="0"] .calc-tabs-indicator { transform: translateX(0); }
-.calc-tabs[data-active="1"] .calc-tabs-indicator { transform: translateX(100%); }
-.calc-tabs[data-active="2"] .calc-tabs-indicator { transform: translateX(200%); }
 
 .calc-tab {
   position: relative;
@@ -849,13 +866,16 @@ body {
   color: var(--c-text-muted);
   background: transparent;
   border: none;
+  border-radius: 9px;
   cursor: pointer;
   white-space: nowrap;
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, background-color 0.25s ease;
 }
 
-.calc-tab:hover { color: var(--c-text-2); }
+/* Soft, contained hover tint on the tab's own cell. */
+.calc-tab:hover { color: var(--c-text-2); background: rgba(var(--c-surface-rgb), 0.06); }
 .calc-tab--active { color: var(--c-accent-soft); }
+.calc-tab--active:hover { background: transparent; }
 
 /* Utility icon buttons (smart / undo / redo / settings / history / about) */
 .calc-utils {
